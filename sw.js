@@ -1,6 +1,6 @@
 /* Service worker de Luar Mind: guarda la app para usarla sin internet. Sube VERSION cuando publiques cambios. */
 const VERSION='luar-v3';
-const CORE=['./','index.html','manifest.webmanifest','icons/icon-192.png','icons/icon-192.png','icons/maskable-192.png','icons/apple-touch-icon.png','icons/favicon.png'];
+const CORE=['./','index.html','manifest.webmanifest','icons/icon-192.png','icons/icon-192.png','icons/apple-touch-icon.png','icons/favicon.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{

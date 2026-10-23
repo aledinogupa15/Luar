@@ -302,7 +302,7 @@ footer{padding-block:6px 30px}
   <div class="gutter">
     <div class="top-row">
       <div class="brand" id="brand"></div>
-      <div class="top-actions"><button class="iconbtn" id="themeBtn" type="button" aria-label="Cambiar tema"></button><button class="sos" id="sosBtn" type="button"><span class="long">Necesito ayuda ahora</span><span class="short">Ayuda ya</span></button></div>
+      <div class="top-actions"><button class="iconbtn" id="installBtn" type="button" aria-label="Instalar la app" title="Instalar la app" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg></button><button class="iconbtn" id="themeBtn" type="button" aria-label="Cambiar tema"></button><button class="sos" id="sosBtn" type="button"><span class="long">Necesito ayuda ahora</span><span class="short">Ayuda ya</span></button></div>
     </div>
     <nav class="tabs" id="tabs" aria-label="Secciones"></nav>
   </div>
@@ -435,6 +435,14 @@ footer{padding-block:6px 30px}
     <p><strong>Luar no es un psicólogo ni un servicio de emergencia.</strong> Es una IA de apoyo con ejercicios de terapia cognitivo-conductual, agenda y registro de ánimo. No diagnostica ni reemplaza a un profesional.</p>
     <p>Si estás en peligro o piensas en hacerte daño: <strong>113</strong> (salud mental, gratuita, 24 h) · <strong>105</strong> Policía · <strong>106</strong> SAMU.</p>
     <div class="row"><button class="btn" id="gateOk" type="button">Entiendo, continuar</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="installHelp" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="instT">
+    <h2 id="instT">Instalar Luar Mind</h2>
+    <p id="instBody"></p>
+    <div class="row"><button class="btn" id="instOk" type="button">Entendido</button></div>
   </div>
 </div>
 <div id="toast" role="status" hidden></div>
@@ -3229,6 +3237,34 @@ if(!S.accepted){var g=$('#gate');g.hidden=false;$('#gateOk').focus();$('#gateOk'
 })();
 </script>
 
+
+<script>
+(function(){
+  var btn=document.getElementById('installBtn'),box=document.getElementById('installHelp'),body=document.getElementById('instBody'),ok=document.getElementById('instOk');
+  if(!btn||!box)return;
+  var standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+  if(standalone)return;                       /* ya está instalada: no mostrar el botón */
+  var ua=navigator.userAgent||'',isIOS=/iphone|ipad|ipod/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  var isAndroid=/android/i.test(ua),deferred=null;
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;btn.hidden=false});
+  window.addEventListener('appinstalled',function(){deferred=null;btn.hidden=true;box.hidden=true});
+  if(location.protocol!=='file:')btn.hidden=false;   /* siempre ofrecer ayuda para instalar (iPhone, Firefox, etc.) */
+  function help(){
+    var t;
+    if(isIOS)t='En iPhone o iPad: abre esta página en <strong>Safari</strong>, toca el botón <strong>Compartir</strong> (el cuadrado con la flecha hacia arriba) y elige <strong>“Agregar a pantalla de inicio”</strong>.';
+    else if(isAndroid)t='En Android: abre el menú <strong>⋮</strong> de Chrome y elige <strong>“Instalar app”</strong> o <strong>“Agregar a pantalla principal”</strong>.';
+    else t='En la computadora: busca el ícono de instalar en la barra de direcciones de Chrome o Edge, o abre el menú del navegador y elige <strong>“Instalar Luar Mind”</strong>.';
+    body.innerHTML=t+'<br><br>Después se abre como una app, a pantalla completa, y funciona sin internet.';
+    box.hidden=false;
+  }
+  btn.addEventListener('click',function(){
+    if(deferred){deferred.prompt();deferred.userChoice.finally(function(){deferred=null;btn.hidden=true})}
+    else help();
+  });
+  ok.addEventListener('click',function(){box.hidden=true});
+  box.addEventListener('click',function(e){if(e.target===box)box.hidden=true});
+})();
+</script>
 <script>
 if('serviceWorker' in navigator && location.protocol!=='file:'){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
 </script>

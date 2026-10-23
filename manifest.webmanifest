@@ -1,0 +1,19 @@
+{
+  "name": "Luar Mind",
+  "short_name": "Luar Mind",
+  "description": "Espacio de apoyo emocional con tu mascota Luar, agenda, registro de ánimo, juegos y chat.",
+  "lang": "es",
+  "start_url": "./index.html",
+  "scope": "./",
+  "id": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F8F6FF",
+  "theme_color": "#5A5ED4",
+  "categories": ["health", "lifestyle"],
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

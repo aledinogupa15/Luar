@@ -353,6 +353,7 @@ footer{padding-block:6px 30px}
         <textarea id="chatIn" rows="1" placeholder="Escribe aquí lo que quieras contar o preguntar" aria-label="Mensaje para Luar"></textarea>
         <button class="btn" id="chatSend" type="button">Enviar</button>
       </div>
+      <div class="row" style="justify-content:flex-end"><button class="btn ghost" id="chatClear" type="button" style="padding:6px 14px;font-size:.85rem">Borrar conversación</button></div>
       <p class="muted small" id="chatNote">Luar es una IA de apoyo, no un psicólogo. Si estás en peligro o piensas en hacerte daño, usa el botón rojo de arriba.</p>
     </div>
   </section>
@@ -2582,7 +2583,7 @@ function inl(s){return s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')}
 function md(t){var out='',inList=false;esc(t).split('\n').forEach(function(l){var m=l.match(/^\s*[-*•]\s+(.*)/);if(m){if(!inList){out+='<ul>';inList=true}out+='<li>'+inl(m[1])+'</li>'}else{if(inList){out+='</ul>';inList=false}if(l.trim())out+='<p>'+inl(l)+'</p>'}});if(inList)out+='</ul>';return out}
 
 /* ---------- estado ---------- */
-function def(){return {accepted:false,coins:0,inv:{},bond:0,entries:[],tasks:[],done:{},thoughts:[],gratitude:[],pet:{food:80,energy:80,fun:70,clean:80,t:Date.now(),sleeping:false}}}
+function def(){return {chat:[],accepted:false,coins:0,inv:{},bond:0,entries:[],tasks:[],done:{},thoughts:[],gratitude:[],pet:{food:80,energy:80,fun:70,clean:80,t:Date.now(),sleeping:false}}}
 function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);return Object.assign(def(),o)}}catch(e){}return def()}
 var S=load();
 S.coins=Math.max(0,+S.coins||0);S.inv=(S.inv&&typeof S.inv==='object')?S.inv:{};
@@ -3307,7 +3308,7 @@ var wipeArmed=false;
 $('#wipeBtn').onclick=function(){
   var b=$('#wipeBtn');
   if(!wipeArmed){wipeArmed=true;b.textContent='Confirmar: borrar todo';b.classList.add('warn');setTimeout(function(){wipeArmed=false;b.textContent='Borrar todos mis datos';b.classList.remove('warn')},5000);return}
-  var acc=S.accepted;S=def();S.accepted=acc;save();wipeArmed=false;b.textContent='Borrar todos mis datos';b.classList.remove('warn');
+  var acc=S.accepted;S=def();S.accepted=acc;save();chat.turns=[];try{log.innerHTML='';addBubble('ai','<p>Empecemos de nuevo. ¿Cómo estás hoy?</p>')}catch(e){}wipeArmed=false;b.textContent='Borrar todos mis datos';b.classList.remove('warn');
   refreshPet();renderLog();renderAgenda();toast('Datos borrados de este navegador');
 };
 
@@ -3329,6 +3330,7 @@ function localReply(text,risk,signal){return new Promise(function(res,rej){
     }catch(e){rej(e)}
   },350+Math.random()*350)})}
 var chat={turns:[],busy:false,ctl:null};
+function persistChat(){try{S.chat=chat.turns.filter(function(m){return (m.role==='user'||m.role==='assistant')&&typeof m.content==='string'}).slice(-80);save()}catch(e){}}
 var log=$('#chatLog'),inp=$('#chatIn'),sendBtn=$('#chatSend');
 function addBubble(who,html){var b=document.createElement('div');b.className='bubble '+who;b.innerHTML='<div class="txt">'+html+'</div>';log.appendChild(b);log.scrollTop=log.scrollHeight;return b}
 function crisisCard(){
@@ -3363,7 +3365,7 @@ function setBusy(b){chat.busy=b;sendBtn.textContent=b?'Detener':'Enviar';inp.dis
 async function sendChat(text){
   if(chat.busy)return;
   text=String(text).trim();if(!text)return;
-  inp.value='';addBubble('me',esc(text).replace(/\n/g,'<br>'));chat.turns.push({role:'user',content:text});
+  inp.value='';addBubble('me',esc(text).replace(/\n/g,'<br>'));chat.turns.push({role:'user',content:text});persistChat();
   var risk=RISK.test(text);if(risk){log.appendChild(crisisCard());log.scrollTop=log.scrollHeight}
   var b=addBubble('ai','<span class="muted">Luar está pensando…</span>');
   var txt=b.querySelector('.txt'),chips=document.createElement('div');chips.className='chips';b.appendChild(chips);curChips=chips;
@@ -3371,11 +3373,11 @@ async function sendChat(text){
   var opts={cache:false,signal:chat.ctl.signal,onText:function(u){txt.innerHTML=md(u.text);log.scrollTop=log.scrollHeight}};
   try{
     var r=await localReply(text,risk,chat.ctl.signal);
-    txt.innerHTML=md(r.text);chat.turns.push({role:'assistant',content:r.text});
+    txt.innerHTML=md(r.text);chat.turns.push({role:'assistant',content:r.text});persistChat();
     if(r.truncated)txt.insertAdjacentHTML('beforeend','<p class="muted small">La respuesta se cortó. Pídeme que continúe.</p>');
   }catch(e){
     var code=e&&e.code;
-    if(code==='cancelled'){if(e.text){txt.innerHTML=md(e.text);chat.turns.push({role:'assistant',content:e.text})}else b.remove()}
+    if(code==='cancelled'){if(e.text){txt.innerHTML=md(e.text);chat.turns.push({role:'assistant',content:e.text});persistChat()}else b.remove()}
     else if(code==='not_granted'||code==='sampling_disabled'||code==='not_declared'||code==='capability_disabled'){txt.innerHTML='<p>El chat con IA no está habilitado en tu cuenta o en esta vista. Puedes usar las dinámicas, la agenda y los tips.</p>';sampleFn=null;inp.disabled=true;sendBtn.disabled=true}
     else{if(e&&e.text)txt.innerHTML=md(e.text);txt.insertAdjacentHTML('beforeend','<p class="muted small">'+(ERR[code]||ERR.upstream_error)+'</p>')}
   }finally{curChips=null;setBusy(false);log.scrollTop=log.scrollHeight}
@@ -3385,6 +3387,17 @@ inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.pr
 var SUG=['Organiza mi día','Me siento ansioso/a','No puedo dormir bien','Quiero registrar mi ánimo','Integral de x·e^x','Recomiéndame música','¿Qué está de moda?'];
 SUG.forEach(function(s){var c=document.createElement('button');c.type='button';c.className='chip';c.textContent=s;c.onclick=function(){sendChat(s)};$('#chatSug').appendChild(c)});
 addBubble('ai','<p>Hola, soy Luar. Funciono con una red neuronal pequeña que corre en tu navegador: te acompaño con ideas de terapia cognitivo-conductual, resuelvo integrales, derivadas y ecuaciones paso a paso, te recomiendo música y te cuento qué está de moda, respondo preguntas sencillas y te digo con honestidad cuando no sé algo.</p><p>No soy psicólogo ni un servicio de emergencia. Cuéntame, ¿cómo va tu día?</p>');
+(function restoreChat(){
+  var saved=Array.isArray(S.chat)?S.chat.filter(function(m){return m&&(m.role==='user'||m.role==='assistant')&&typeof m.content==='string'}):[];
+  if(!saved.length)return;
+  chat.turns=saved.slice();
+  var d=document.createElement('p');d.className='muted small';d.style.textAlign='center';d.textContent='Conversación anterior';log.appendChild(d);
+  saved.forEach(function(m){if(m.role==='user')addBubble('me',esc(m.content).replace(/\n/g,'<br>'));else addBubble('ai',md(m.content))});
+  var d2=document.createElement('p');d2.className='muted small';d2.style.textAlign='center';d2.textContent='— continuamos —';log.appendChild(d2);
+  log.scrollTop=log.scrollHeight;
+})();
+$('#chatClear').onclick=function(){var b=$('#chatClear');if(!b._armed){b._armed=true;b.textContent='Confirmar: borrar';setTimeout(function(){b._armed=false;b.textContent='Borrar conversación'},4000);return}
+  b._armed=false;b.textContent='Borrar conversación';chat.turns=[];S.chat=[];save();log.innerHTML='';addBubble('ai','<p>Empecemos de nuevo. ¿Cómo estás hoy?</p>')};
 
 
 /* ---------- Tema claro / oscuro ---------- */

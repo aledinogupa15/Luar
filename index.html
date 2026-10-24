@@ -296,6 +296,62 @@ footer{padding-block:6px 30px}
 .chip.food{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 8px}
 .chip.food svg{width:26px;height:26px;display:block}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ===== bienestar ampliado ===== */
+.card.stage{position:relative;overflow:hidden}
+.card.stage .decolayer{position:absolute;inset:0;pointer-events:none;z-index:0}
+.card.stage .decolayer svg{width:100%;height:100%;display:block}
+.card.stage .stage-in{position:relative;z-index:1}
+.wbgrp{grid-column:1/-1;font-family:var(--font-display);font-weight:600;color:var(--primary);margin-top:6px}
+.wbgrid{margin-top:4px}
+.wbpanel{margin-top:6px;scroll-margin-top:90px}
+.wbhead{justify-content:space-between}
+.wbcount{color:var(--ok)}
+.wbrow{padding:6px 0;border-bottom:1px solid var(--line);gap:8px}
+.wbtip{background:var(--surface2)}
+.wbacts{gap:8px}
+.gstage{display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px 0}
+.gcircle{width:120px;height:120px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--bub1),var(--bub2) 60%,var(--bub3));transition:transform linear;box-shadow:0 0 30px -6px var(--bub4)}
+.gtext{font-size:1.15rem;font-weight:600;text-align:center;min-height:3.2em;max-width:30ch}
+.gsec{font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--primary)}
+.qopt{background:var(--bg);border:1.5px solid var(--line);border-radius:14px;padding:10px 14px;text-align:left;cursor:pointer;width:100%}
+.qopt:hover:not(:disabled){border-color:var(--primary)}
+.qopt.right{background:color-mix(in srgb,var(--ok) 22%,var(--surface));border-color:var(--ok)}
+.qopt.wrong{background:var(--danger-bg);border-color:var(--danger)}
+.qfb{margin-top:6px;display:flex;flex-direction:column;gap:8px}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.calh{text-align:center;font-weight:700;color:var(--muted);font-size:.8rem}
+.calc{aspect-ratio:1;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);cursor:pointer;font-weight:600;min-width:0;padding:0}
+.calc.empty{border:0;background:none;cursor:default}
+.calc.today{outline:2px solid var(--primary)}
+.calc.sel{box-shadow:0 0 0 3px var(--primary) inset}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.wkbars{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end}
+.wkcol{display:flex;flex-direction:column;align-items:center;gap:4px}
+.wkb{height:90px;width:100%;display:flex;align-items:flex-end;background:var(--bg);border-radius:10px;overflow:hidden}
+.wkb i{display:block;width:100%;border-radius:10px 10px 0 0}
+.mapbox{display:grid;gap:10px;background:var(--surface2);padding:14px;border-radius:16px}
+.evogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.evoit{background:var(--bg);border:1.5px solid var(--line);border-radius:16px;padding:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;min-width:0}
+.evoit svg{width:64px;height:64px;background:var(--surface2);border-radius:12px}
+.evoit svg.decoprev{width:100%;height:64px}
+.evoit.on{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary) inset}
+.evoit.locked{opacity:.75}
+.streak{display:flex;flex-direction:column;gap:6px;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:10px 14px}
+.sdots{display:flex;gap:6px}
+.sdot{flex:1;height:10px;border-radius:6px;background:var(--line)}
+.sdot.on{background:var(--grad)}
+.sdot.now{outline:2px solid var(--primary);outline-offset:1px}
+.lockscr{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;overflow:auto}
+.lockscr[hidden]{display:none}
+.pdots{display:flex;gap:12px;min-height:16px}
+.pdots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--primary)}
+.pdots i.on{background:var(--primary)}
+.keypad{display:grid;grid-template-columns:repeat(3,72px);gap:12px}
+.key{width:72px;height:72px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);font-size:1.5rem;font-weight:600;cursor:pointer}
+.key:active{background:var(--surface2)}
+select{background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+
 </style>
 
 <header class="top">
@@ -2673,13 +2729,14 @@ function refreshBond(){
   $('#bondName').textContent='Vínculo: '+name+' (nivel '+(lvl+1)+')';
   $('#bondBar').style.width=((S.bond%25)/25*100)+'%';
   var n=(S.done[today()]||[]).length;
-  $('#doneToday').textContent='Hoy: '+n+' de 4 dinámicas';
+  $('#doneToday').textContent='Hoy: '+n+(n===1?' actividad':' actividades');
 }
 function refreshPet(){refreshCoins();refreshFace();refreshSay();refreshBond();renderDynGrid()}
 function reward(id){
   var t=today();if(!S.done[t])S.done[t]=[];
   var first=S.done[t].indexOf(id)<0;
   if(first){S.done[t].push(id);S.bond+=10;toast('Luar está contento. +10 de vínculo')}else toast('Muy bien. Hoy ya ganaste el vínculo de esta dinámica');
+  try{wbStat(id,first)}catch(e){}
   save();refreshPet();hop();
 }
 
@@ -2698,16 +2755,14 @@ function renderMoods(){
   TAGS.forEach(function(t){var c=document.createElement('button');c.type='button';c.className='chip';c.textContent=t;c.setAttribute('aria-pressed',String(pickedTags.indexOf(t)>=0));
     c.onclick=function(){var i=pickedTags.indexOf(t);if(i>=0)pickedTags.splice(i,1);else pickedTags.push(t);renderMoods()};tg.appendChild(c)});
 }
-function addEntry(mood,tags,note){
-  S.entries.push({t:new Date().toISOString(),d:today(),mood:mood,tags:tags||[],note:(note||'').slice(0,400)});
+function addEntry(mood,tags,note,extra){
+  var e={t:new Date().toISOString(),d:today(),mood:mood,tags:tags||[],note:(note||'').slice(0,400)};
+  if(extra){e.i=extra.i;e.sit=extra.sit||[]}
+  S.entries.push(e);
   if(S.entries.length>400)S.entries=S.entries.slice(-400);
-  save();refreshPet();renderLog();
+  save();refreshPet();renderLog();return e;
 }
-$('#ckSave').onclick=function(){
-  if(!pickedMood)return;
-  addEntry(pickedMood,pickedTags.slice(),$('#ckNote').value);
-  pickedMood=0;pickedTags=[];$('#ckNote').value='';$('#ckForm').hidden=true;renderMoods();toast('Registro guardado');
-};
+$('#ckSave').onclick=function(){wbSave()};
 
 /* ---------- Dinámicas ---------- */
 var DYN=[
@@ -3234,7 +3289,7 @@ function renderAgenda(){
       var r=document.createElement('div');r.className='task'+(t.done?' done':'');
       var late=!t.done&&t.date<today();
       r.innerHTML='<button type="button" class="check" aria-label="Marcar como hecho">'+(t.done?'✓':'')+'</button><div class="tx">'+esc(t.text)+(t.time?' <span class="muted small">'+esc(t.time)+'</span>':'')+(late?' <span class="late">Pendiente de antes</span>':'')+'</div><button type="button" class="x" aria-label="Eliminar">Quitar</button>';
-      r.querySelector('.check').onclick=function(){t.done=!t.done;save();renderAgenda();if(t.done)toast('Hecho. Un paso menos')};
+      r.querySelector('.check').onclick=function(){t.done=!t.done;save();renderAgenda();if(t.done){toast('Hecho. Un paso menos');if(t.tpl)try{wbDone('care')}catch(e){}}};
       r.querySelector('.x').onclick=function(){S.tasks=S.tasks.filter(function(x){return x.id!==t.id});save();renderAgenda()};
       box.appendChild(r)})});
 }
@@ -3323,7 +3378,7 @@ $('#wipeBtn').onclick=function(){
   var b=$('#wipeBtn');
   if(!wipeArmed){wipeArmed=true;b.textContent='Confirmar: borrar todo';b.classList.add('warn');setTimeout(function(){wipeArmed=false;b.textContent='Borrar todos mis datos';b.classList.remove('warn')},5000);return}
   var acc=S.accepted;S=def();S.accepted=acc;save();chat.turns=[];try{log.innerHTML='';addBubble('ai',greetHTML())}catch(e){}wipeArmed=false;b.textContent='Borrar todos mis datos';b.classList.remove('warn');
-  refreshPet();renderLog();renderAgenda();toast('Datos borrados de este navegador');
+  refreshPet();renderLog();renderAgenda();try{applyEquip();renderEvo();renderForYou();renderCare();updateStreak();renderStreak();renderNotifCard()}catch(e){}toast('Datos borrados de este navegador');
 };
 
 /* ---------- Chat ---------- */
@@ -3482,9 +3537,952 @@ function setTheme(m){try{localStorage.setItem(THEME_KEY,m)}catch(e){}applyTheme(
 $('#themeBtn').onclick=function(){setTheme(effectiveTheme()==='dark'?'light':'dark')};
 try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',renderTheme)}catch(e){}
 
+/* ========== BIENESTAR AMPLIADO (wb) ========== */
+/* ===== Luar Mind · bienestar ampliado: núcleo (estado, recompensas, desbloqueos, actividades) ===== */
+function WB(){var w=S.wb;if(!w||typeof w!=='object')w=S.wb={};
+  ['trs','calm','wins','maps'].forEach(function(k){if(!Array.isArray(w[k]))w[k]=[]});
+  ['habits','skills','stats','fav','unlock','eq','strong','plan'].forEach(function(k){if(!w[k]||typeof w[k]!=='object'||Array.isArray(w[k]))w[k]={}});
+  if(!Array.isArray(w.likes))w.likes=[];if(!w.eq.deco)w.eq.deco='luna';
+  if(!Array.isArray(w.kind))w.kind=[];
+  return w}
+function pick(a,seed){return a[Math.floor(((seed===undefined?Math.random():seed))*a.length)%a.length]}
+function dayHash(){var d=today(),h=0;for(var i=0;i<d.length;i++)h=(h*31+d.charCodeAt(i))>>>0;return h}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function mean(a){return a.length?a.reduce(function(x,y){return x+y},0)/a.length:0}
+function fx(n,d){return (Math.round(n*Math.pow(10,d||1))/Math.pow(10,d||1)).toString().replace('.',',')}
+function addDays(d,k){var p=d.split('-'),x=new Date(+p[0],+p[1]-1,+p[2]);x.setDate(x.getDate()+k);return dstr(x)}
+function parseD(d){var p=d.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+function esc2(t){return esc(String(t==null?'':t))}
+function mkBtn(label,cls,fn,attrs){var b=document.createElement('button');b.type='button';b.className='btn'+(cls?' '+cls:'');b.textContent=label;if(fn)b.onclick=fn;return b}
+function chipRow(opts,sel,multi,onChange,max){var box=document.createElement('div');box.className='chips';
+  function paint(){box.innerHTML='';opts.forEach(function(o){var c=document.createElement('button');c.type='button';c.className='chip';c.textContent=o;c.setAttribute('aria-pressed',String(sel.indexOf(o)>=0));
+    c.onclick=function(){var i=sel.indexOf(o);if(multi){if(i>=0)sel.splice(i,1);else{if(max&&sel.length>=max){toast('Puedes elegir hasta '+max);return}sel.push(o)}}else{sel.length=0;if(i<0)sel.push(o)}paint();onChange&&onChange(sel)};box.appendChild(c)})}
+  paint();return box}
+function el(html,cls){var d=document.createElement('div');if(cls)d.className=cls;d.innerHTML=html;return d}
+
+/* ---------- actividades completadas: vínculo, monedas y desbloqueos ---------- */
+var ACTLABEL={breath:'respiración',b478:'respiración 4-7-8',box:'respiración en caja',belly:'respiración abdominal',pmr:'relajación muscular',scan:'escáner corporal',imagery:'lugar seguro',stretch:'estiramientos',stop:'pausa STOP',worry:'descarga de preocupaciones',prio:'prioridades',wave:'ola de emoción',ground:'anclaje 5-4-3-2-1',good:'tres cosas buenas',step:'mini reto',thought:'pensamiento',diary:'diario',tr:'registro de pensamientos',habits:'hábitos',qemo:'adivina la emoción',vocab:'palabras para emociones',body:'dónde lo siento',fort:'fortalezas',wins:'logros',letter:'carta amable',critic:'voz amable',asert:'asertividad',listen:'escucha activa',limits:'límites',conflict:'conflictos',empathy:'empatía',care:'autocuidado',reflect:'reflexión'};
+var CALM_IDS=['breath','b478','box','belly','pmr','scan','imagery','stretch','stop','worry','prio','wave','ground'];
+var SELF_IDS=['fort','wins','letter','critic'];
+var SOC_IDS=['asert','listen','limits','conflict','empathy'];
+function cntOf(ids){var s=WB().stats;return ids.reduce(function(a,k){return a+(s[k]||0)},0)}
+function totalActs(){var s=WB().stats;return Object.keys(s).reduce(function(a,k){return a+s[k]},0)}
+function diaryDays(){var o={};S.entries.forEach(function(e){o[e.d]=1});return Object.keys(o).length}
+function habitDays(){return Object.keys(WB().habits).filter(function(d){var h=WB().habits[d];return h&&(h.sleep||h.water||(h.pl&&h.pl.length)||(h.ck&&h.ck.length))}).length}
+var ITEMS=[
+ {id:'gorro',slot:'head',n:'Gorrito de fiesta',need:function(){return totalActs()>=3},hint:'Completa 3 actividades de bienestar',prog:function(){return [totalActs(),3]}},
+ {id:'flor',slot:'head',n:'Flor de primavera',need:function(){return S.entries.length>=3},hint:'Haz 3 registros en tu diario',prog:function(){return [S.entries.length,3]}},
+ {id:'audifonos',slot:'head',n:'Audífonos',need:function(){return cntOf(CALM_IDS)>=5},hint:'Haz 5 ejercicios de calma',prog:function(){return [cntOf(CALM_IDS),5]}},
+ {id:'lazo',slot:'head',n:'Lazo rosa',need:function(){return totalActs()>=8},hint:'Completa 8 actividades',prog:function(){return [totalActs(),8]}},
+ {id:'anteojos',slot:'face',n:'Anteojos redondos',need:function(){return WB().trs.length>=3},hint:'Guarda 3 registros de pensamientos',prog:function(){return [WB().trs.length,3]}},
+ {id:'bufanda',slot:'neck',n:'Bufanda calentita',need:function(){return diaryDays()>=7},hint:'Registra tu ánimo en 7 días distintos',prog:function(){return [diaryDays(),7]}},
+ {id:'corbatin',slot:'neck',n:'Corbatín',need:function(){return cntOf(SOC_IDS)>=4},hint:'Practica 4 veces habilidades sociales',prog:function(){return [cntOf(SOC_IDS),4]}},
+ {id:'estrellas',slot:'head',n:'Estrellitas',need:function(){return cntOf(SELF_IDS)>=4},hint:'Haz 4 ejercicios de autoestima',prog:function(){return [cntOf(SELF_IDS),4]}},
+ {id:'corona',slot:'head',n:'Corona',need:function(){return totalActs()>=40},hint:'Completa 40 actividades',prog:function(){return [totalActs(),40]}}
+];
+var DECOS=[
+ {id:'luna',n:'Noche de luna',need:function(){return true},hint:'Incluido'},
+ {id:'jardin',n:'Jardín',need:function(){return cntOf(CALM_IDS)>=3},hint:'Haz 3 ejercicios de calma',prog:function(){return [cntOf(CALM_IDS),3]}},
+ {id:'playa',n:'Playa',need:function(){return habitDays()>=5},hint:'Registra tus hábitos 5 días',prog:function(){return [habitDays(),5]}},
+ {id:'bosque',n:'Bosque',need:function(){return WB().trs.length>=5||cntOf(SOC_IDS)>=6},hint:'5 registros de pensamientos o 6 prácticas sociales',prog:function(){return [Math.max(WB().trs.length,cntOf(SOC_IDS)),5]}},
+ {id:'biblioteca',n:'Biblioteca',need:function(){return S.entries.length>=15},hint:'Haz 15 registros en tu diario',prog:function(){return [S.entries.length,15]}},
+ {id:'espacio',n:'Espacio',need:function(){return totalActs()>=25},hint:'Completa 25 actividades',prog:function(){return [totalActs(),25]}}
+];
+function checkUnlocks(silent){var w=WB(),got=[];
+  ITEMS.concat(DECOS).forEach(function(it){if(!w.unlock[it.id]&&it.need()){w.unlock[it.id]=Date.now();if(it.id!=='luna')got.push(it)}});
+  if(got.length&&!silent){save();setTimeout(function(){toast('¡Luar desbloqueó: '+got.map(function(g){return g.n}).join(', ')+'!')},900)}
+  return got}
+function wbStat(kind,first){
+  var w=WB();w.stats[kind]=(w.stats[kind]||0)+1;w.fav[kind]=(w.fav[kind]||0)+1;
+  if(first)S.coins+=3;
+  checkUnlocks();save();try{refreshCoins();renderEvo();renderForYou()}catch(e){}
+}
+function wbDone(kind){reward(kind)}
+/* ---------- navegación entre actividades ---------- */
+var ACT={};
+function goAct(id){var a=ACT[id];if(!a){toast('Esa actividad no está disponible');return}show(a.tab);setTimeout(function(){try{a.open()}catch(e){}},60)}
+
+/* ===== datos: emociones, necesidades, tips por ánimo, escenarios ===== */
+var EMO_FAM=[
+ ['Alegría',['Contento/a','Entusiasmado/a','Agradecido/a','Orgulloso/a','Esperanzado/a','Aliviado/a']],
+ ['Calma',['Tranquilo/a','Relajado/a','En paz','Con claridad']],
+ ['Tristeza',['Decaído/a','Solo/a','Decepcionado/a','Desanimado/a','Nostálgico/a','Vacío/a']],
+ ['Miedo y nervios',['Nervioso/a','Preocupado/a','Inseguro/a','Abrumado/a','Asustado/a','Tenso/a']],
+ ['Enojo',['Irritado/a','Frustrado/a','Molesto/a','Resentido/a','Impotente','Celoso/a']],
+ ['Vergüenza y culpa',['Avergonzado/a','Culpable','Expuesto/a','Humillado/a']]
+];
+var SITS=['Estudio','Trabajo','Familia','Pareja','Amistades','Salud','Dinero','Sueño','Soledad','Redes sociales','Otra'];
+var EMO_NEEDS=[
+ ['Descansar','Tu cuerpo o tu mente piden pausa.',['stretch','belly']],
+ ['Ser escuchado/a','Poner en palabras lo que sientes alivia.',['diary','letter']],
+ ['Apoyo de alguien','Contarle a una persona de confianza ayuda a no cargar solo/a.',['listen']],
+ ['Poner un límite','Algo te está pasando por encima.',['limits','asert']],
+ ['Moverme','El cuerpo necesita descargar tensión.',['stretch','pmr']],
+ ['Estar a solas un rato','Un espacio tranquilo para ordenarte.',['imagery','scan']],
+ ['Claridad','Ordenar ideas antes de decidir.',['tr','worry']],
+ ['Afecto','Sentirte cuidado/a, empezando por ti.',['letter','critic']],
+ ['Distraerme un momento','Una pausa agradable también cuenta.',['good','habits']],
+ ['Resolver algo concreto','Un paso pequeño le baja el peso al problema.',['prio','step']],
+ ['Ayuda profesional','Hay cosas que se trabajan mejor acompañado/a por un profesional.',['help']]
+];
+var CTX_WHERE=['En casa','Trabajo','Estudio','En la calle o transporte','En redes sociales','Otro lugar'];
+var CTX_WHO=['Solo/a','Familia','Pareja','Amistades','Compañeros','Gente desconocida'];
+var CTX_TRIG=['Algo que pasó','Algo que pensé','Un recuerdo','Algo que leí o vi','No sé bien por qué'];
+var BODYZ=[['Cabeza','Presión, dolor o mente acelerada suelen aparecer con estrés, preocupación o cansancio.'],['Garganta','Un nudo en la garganta suele acompañar a la tristeza o a lo que no te animas a decir.'],['Pecho','Pecho apretado o corazón rápido son frecuentes con nervios, miedo o enojo intenso.'],['Estómago','Nudo o mariposas en el estómago son típicos de los nervios y la ansiedad.'],['Hombros y cuello','Hombros duros suelen reflejar tensión sostenida y estrés.'],['Manos','Manos frías, sudorosas o inquietas suelen asociarse a nervios.'],['Piernas','Inquietud en las piernas o pesadez pueden acompañar a la ansiedad o al cansancio.']];
+
+/* ---- tips según ánimo (b = texto breve; act = actividades sugeridas) ---- */
+var TIP_MOOD={
+ 1:[{t:'Hoy puede ser suficiente con cuidarte',b:'Cuando el ánimo está muy bajo, bajar la exigencia es parte del cuidado. Elige una sola cosa pequeña: tomar agua, comer algo, respirar o avisarle a alguien.',act:['belly','ground']},
+    {t:'Lo que sientes no define tu día entero',b:'Las emociones intensas suben y bajan como olas. Una respiración lenta o salir un rato a la luz suele aflojarlas un poco.',act:['wave','b478']},
+    {t:'No tienes que pasarlo solo/a',b:'Escribirle a una persona de confianza, aunque sea "hoy no estoy bien", ya es un paso. Si se vuelve insoportable o piensas en hacerte daño, usa el botón rojo de arriba.',act:['help']}],
+ 2:[{t:'Activación conductual de 5 minutos',b:'Cuando estás decaído/a, esperar las ganas suele empeorar el ciclo. Elige una acción mínima (ducharte, caminar a la esquina, ordenar un cajón) y empieza. La motivación suele llegar después de actuar.',act:['step']},
+    {t:'Pon tu pensamiento en una hoja',b:'Si algo te da vueltas, anótalo: situación, pensamiento y emoción. Verlo escrito ayuda a mirarlo con más distancia.',act:['tr']},
+    {t:'Una cosa buena, por pequeña que sea',b:'Aunque el día sea gris, busca algo que salió un poco mejor de lo esperado. No niega lo difícil: equilibra la mirada.',act:['good']}],
+ 3:[{t:'Un día neutro es buen momento para sumar',b:'Aprovecha la calma para una pequeña inversión en ti: una caminata, un hábito sencillo o algo que disfrutes.',act:['habits','step']},
+    {t:'Conoce tu punto de partida',b:'Anotar cómo estás cuando "no pasa nada" te ayuda a notar después qué mueve tu ánimo para arriba o para abajo.',act:['qemo','vocab']}],
+ 4:[{t:'Aprovecha y fija lo que funcionó',b:'Pregúntate qué ayudó hoy: dormir mejor, hablar con alguien, moverte. Anotarlo te sirve como "manual" para días más difíciles.',act:['good','wins']},
+    {t:'Úsalo para fortalecerte',b:'Los días buenos son ideales para practicar habilidades: una conversación pendiente, un límite pequeño o un ejercicio de autoestima.',act:['asert','fort']}],
+ 5:[{t:'Saborea el momento',b:'Quédate 30 segundos notando cómo se siente tu cuerpo ahora. Disfrutar conscientemente un buen momento lo hace durar más en la memoria.',act:['good']},
+    {t:'Guarda este logro',b:'Si hubo algo que te hizo sentir orgulloso/a hoy, anótalo. Después te servirá de recordatorio cuando dudes de ti.',act:['wins']},
+    {t:'Comparte la energía',b:'Un mensaje amable a alguien o un gesto pequeño suele hacernos sentir todavía mejor.',act:['empathy']}]
+};
+var TIP_TAG={
+ 'Ansiedad':[{t:'Baja la activación del cuerpo',b:'La ansiedad se alimenta de aceleración. Exhalar más largo que inhalar y volver al presente con los sentidos ayudan a frenarla.',act:['b478','ground']}],
+ 'Estrés':[{t:'Una cosa a la vez',b:'Escribe lo pendiente, elige lo más importante y pospón el resto. Cuando todo parece urgente, ordenar baja el agobio.',act:['prio','stop']}],
+ 'Cansancio':[{t:'Descanso de verdad',b:'Si estás agotado/a, la pausa no es pérdida de tiempo. Prueba estirarte, bajar pantallas y cuidar tu sueño esta noche.',act:['stretch','habits']}],
+ 'Tristeza':[{t:'Permítete sentirla, sin quedarte atrapado/a',b:'Ponle nombre a lo que sientes y haz algo amable para ti: caminar, escuchar algo que te guste o hablar con alguien.',act:['body','letter']}],
+ 'Enojo':[{t:'Pausa antes de responder',b:'Espera diez minutos antes de contestar algo con enojo. Respirar lento y nombrar lo que sientes baja la intensidad.',act:['wave','conflict']}],
+ 'Calma':[{t:'Recuerda cómo llegaste aquí',b:'Anota qué te ayudó a sentirte tranquilo/a. Será tu receta personal para otros días.',act:['good']}],
+ 'Alegría':[{t:'Celebra lo bueno',b:'Compártelo o anótalo. Registrar lo agradable entrena a tu mente a notarlo más seguido.',act:['wins']}],
+ 'Soledad':[{t:'Un pequeño paso hacia los demás',b:'No hace falta una gran salida: un mensaje corto a alguien con quien hablabas antes ya cuenta. También puede ayudar estar en un lugar con gente, aunque no hables.',act:['listen','empathy']}],
+ 'Motivación':[{t:'Aprovecha el impulso',b:'Divide eso que quieres hacer en pasos de 10 a 25 minutos y empieza por el primero ahora.',act:['prio','step']}]
+};
+/* ---- tips psicológicos (educativos) ---- */
+var TIPS2=[
+ {c:'Inteligencia emocional',t:'Poner nombre a lo que sientes',b:'<p>Decir con precisión qué emoción tienes ("frustrado", no solo "mal") baja su intensidad y te ayuda a decidir qué hacer. A esto se le llama <strong>etiquetado emocional</strong>.</p><ul><li>Pregúntate: ¿qué siento en el cuerpo? ¿qué pienso?</li><li>Busca una palabra más específica que "bien" o "mal".</li></ul>'},
+ {c:'Inteligencia emocional',t:'Las emociones traen información',b:'<ul><li><strong>Miedo:</strong> avisa de un posible riesgo.</li><li><strong>Enojo:</strong> avisa de un límite cruzado o algo injusto.</li><li><strong>Tristeza:</strong> avisa de una pérdida o necesidad de apoyo.</li><li><strong>Culpa:</strong> avisa de un valor que sientes afectado.</li></ul><p>Sentirlas no es el problema: lo útil es qué haces con ellas.</p>'},
+ {c:'Inteligencia emocional',t:'Pausa entre lo que sientes y lo que haces',b:'<p>Entre un impulso y una acción hay un espacio. Alárgalo con tres respiraciones lentas y una pregunta: "¿qué respuesta me va a servir mañana?".</p>'},
+ {c:'Ansiedad',t:'Evitar alimenta la ansiedad',b:'<p>Evitar lo que te asusta alivia hoy, pero le enseña al cerebro que era peligroso. Acercarte <strong>de a poquito</strong> (escalera de pasos pequeños) suele reducir el miedo con el tiempo.</p>'},
+ {c:'Ansiedad',t:'Preocupación útil y preocupación inútil',b:'<p>Pregúntate: ¿puedo hacer algo hoy sobre esto? Si sí, define un paso concreto. Si no, practica soltarlo: volver a tus sentidos o a lo que estás haciendo.</p>'},
+ {c:'Ansiedad',t:'Las sensaciones de ansiedad pasan',b:'<p>Corazón rápido, manos sudorosas o respiración corta son una respuesta de alerta del cuerpo: molestas, pero no peligrosas. Suelen bajar solas en minutos si no las combates. Si aparecen muy seguido o te limitan, consulta con un profesional.</p>'},
+ {c:'Autoestima',t:'Autoestima no es sentirte perfecto/a',b:'<p>Es tratarte con respeto aun cuando te equivocas. Se construye con hechos pequeños: cumplir lo que te prometes, reconocer tus logros y hablarte como le hablarías a un amigo.</p>'},
+ {c:'Autoestima',t:'Cuidado con la comparación',b:'<p>En redes ves lo mejor de los demás frente a todo lo tuyo. Compararte con tu versión de hace un año es más justo y más útil.</p>'},
+ {c:'Autoestima',t:'Diálogo interno más amable',b:'<ol><li>Atrapa la frase dura ("soy un desastre").</li><li>Pregúntate: ¿se lo diría a alguien que quiero?</li><li>Reformúlala con realismo: "me equivoqué en esto; puedo aprender y corregir".</li></ol>'},
+ {c:'Empatía',t:'Escucha para comprender, no para responder',b:'<ul><li>Deja que termine sin interrumpir.</li><li>Refleja: "Entiendo que te sentiste ignorado/a".</li><li>Pregunta antes de aconsejar: "¿quieres que te ayude a pensarlo o solo escucharte?".</li></ul>'},
+ {c:'Empatía',t:'Empatía incluye empatía contigo',b:'<p>Muchas veces somos comprensivos con otros y duros con nosotros. Practicar la autocompasión no es indulgencia: ayuda a recuperarte antes de los errores.</p>'},
+ {c:'Estrés',t:'El estrés también está en el cuerpo',b:'<p>Hombros subidos, mandíbula apretada, respiración corta. Un chequeo corporal rápido, aflojar y respirar lento, evita que se acumule.</p>'},
+ {c:'Estrés',t:'Lo que sí y lo que no controlas',b:'<p>Divide tu preocupación en dos columnas: <strong>depende de mí</strong> y <strong>no depende de mí</strong>. Invierte energía solo en la primera.</p>'},
+ {c:'Estrés',t:'Descansar es parte de rendir',b:'<p>Pausas cortas entre bloques de trabajo (5 minutos cada 25-50) y un sueño suficiente mejoran la concentración más que "aguantar" horas seguidas.</p>'},
+ {c:'Relaciones',t:'Comunicación asertiva',b:'<p>Decir lo que piensas, sientes o necesitas con respeto hacia ti y hacia el otro. Ni pasivo (callar) ni agresivo (atacar). Fórmula: <em>"Yo siento… cuando… y necesito…"</em>.</p>'},
+ {c:'Relaciones',t:'Poner límites es cuidar la relación',b:'<p>Un límite claro y amable evita resentimiento. Puedes decir: "Me importas, y hoy no puedo", sin dar una larga justificación.</p>'},
+ {c:'Sueño',t:'Un hábito a la vez',b:'<p>Cambiar todo junto cansa. Elige un hábito (por ejemplo, levantarte a la misma hora) y sostenlo dos semanas antes de sumar otro.</p>'}
+];
+var REFLECT={
+ low:['¿Qué fue lo más pesado de hoy y qué necesitarías para que se sienta un poco más liviano?','Si un amigo estuviera sintiendo lo mismo que tú, ¿qué le dirías?','¿Qué pequeña cosa podría hacerte sentir 5% mejor ahora mismo?','¿Hay algo que quisieras decir y no has dicho a nadie?','¿Qué pensamiento se repite más hoy? ¿Qué evidencia tienes a favor y en contra?'],
+ mid:['¿Qué emoción estuvo más presente hoy y dónde la sentiste en el cuerpo?','¿Qué te gustaría que fuera distinto mañana?','¿Qué hiciste hoy que cuidó de ti, aunque fuera pequeño?','¿Qué situación se repite últimamente y cómo sueles reaccionar?'],
+ high:['¿Qué ayudó a que hoy se sintiera bien?','¿De qué estás orgulloso/a esta semana?','¿Qué persona o momento quieres agradecer hoy?','¿Cómo podrías repetir esto mañana, aunque sea en pequeño?']
+};
+/* ---- escenarios ---- */
+var Q_EMO=[
+ {q:'Te preparaste mucho para una exposición y te la califican mal sin explicarte por qué. Sientes que no fue justo.',o:['Frustración','Alegría','Nostalgia','Calma'],ok:0,why:'La frustración aparece cuando el esfuerzo no obtiene el resultado esperado y sientes que no controlas la situación.'},
+ {q:'Tu mejor amigo se mudó a otro país. Hoy encontraste fotos de cuando salían juntos.',o:['Orgullo','Nostalgia','Enojo','Vergüenza'],ok:1,why:'La nostalgia mezcla cariño por lo vivido con tristeza suave porque ya pasó.'},
+ {q:'Mañana tienes una entrevista y no puedes dejar de imaginar cosas que podrían salir mal.',o:['Nerviosismo','Alivio','Gratitud','Aburrimiento'],ok:0,why:'Anticipar posibles problemas con tensión corporal es típico del nerviosismo o la ansiedad anticipatoria.'},
+ {q:'Te equivocaste en un mensaje y todo el grupo lo vio. Sientes que la cara te arde.',o:['Vergüenza','Celos','Entusiasmo','Calma'],ok:0,why:'La vergüenza es la sensación de ser visto en un error y temer el juicio de los demás.'},
+ {q:'Esperabas un ascenso y se lo dieron a otra persona. Te sientes como si tu esfuerzo no valiera.',o:['Decepción','Orgullo','Serenidad','Curiosidad'],ok:0,why:'La decepción surge cuando una expectativa importante no se cumple.'},
+ {q:'Aprobaste el examen que más temías.',o:['Alivio','Culpa','Soledad','Irritación'],ok:0,why:'El alivio aparece cuando se va una amenaza o preocupación. Suele venir junto con alegría.'},
+ {q:'Dijiste algo hiriente a tu hermano/a en una discusión y ahora no dejas de pensar en eso.',o:['Culpa','Orgullo','Emoción','Indiferencia'],ok:0,why:'La culpa señala que hiciste algo contra tus propios valores. Es útil si te lleva a reparar.'},
+ {q:'Tu pareja pasa mucho tiempo con alguien que no conoces y no puedes dejar de pensar en eso.',o:['Celos o inseguridad','Gratitud','Calma','Alivio'],ok:0,why:'Los celos suelen mezclar miedo a perder algo importante con inseguridad.'},
+ {q:'Llevas semanas con muchas tareas y sientes que, aunque trabajes, nunca terminas.',o:['Agobio','Alegría','Euforia','Ternura'],ok:0,why:'El agobio aparece cuando las demandas parecen superar los recursos que sientes tener.'},
+ {q:'Un desconocido te ayudó a cargar tus bolsas cuando se te cayeron.',o:['Gratitud','Envidia','Rabia','Tristeza'],ok:0,why:'La gratitud nace al reconocer un gesto amable de otra persona.'}
+];
+var Q_VOC=[
+ {q:'Dices "me siento mal" porque tus amigos hicieron un plan y no te avisaron. ¿Qué palabra lo describe mejor?',o:['Excluido/a','Relajado/a','Orgulloso/a','Curioso/a'],ok:0,why:'Ser más preciso ("excluido") te permite saber qué necesitas: ser incluido o hablarlo.'},
+ {q:'Dices "estoy estresado" cuando tienes mucho trabajo y poco tiempo. ¿Qué palabra se acerca más?',o:['Abrumado/a','Contento/a','Nostálgico/a','Tranquilo/a'],ok:0,why:'Abrumado señala que las demandas se sienten más grandes que tus recursos.'},
+ {q:'"Estoy enojado" porque prometieron algo y no cumplieron. ¿Qué palabra afina el sentimiento?',o:['Decepcionado/a','Agradecido/a','Aliviado/a','Entusiasmado/a'],ok:0,why:'Debajo del enojo muchas veces hay decepción o dolor.'},
+ {q:'"Estoy mal" después de que te criticaron frente a todos. ¿Qué palabra se acerca más?',o:['Avergonzado/a','Esperanzado/a','En paz','Eufórico/a'],ok:0,why:'La vergüenza es la emoción de sentirnos expuestos o juzgados.'},
+ {q:'"Estoy ansioso" porque mañana tienes un examen. ¿Qué palabra describe mejor lo que anticipas?',o:['Inseguro/a','Orgulloso/a','Cariñoso/a','Aliviado/a'],ok:0,why:'Debajo de la ansiedad muchas veces está la inseguridad sobre si podrás con algo.'},
+ {q:'Dices "estoy raro" luego de que se fue alguien querido. ¿Qué palabra se acerca?',o:['Vacío/a','Furioso/a','Entusiasmado/a','Divertido/a'],ok:0,why:'Tras una despedida es común una sensación de vacío o de falta.'},
+ {q:'"Estoy bien" pero en realidad no tienes ni ganas ni preocupación, solo ganas de descansar. ¿Cuál se ajusta?',o:['Cansado/a','Entusiasmado/a','Celoso/a','Orgulloso/a'],ok:0,why:'A veces "estoy bien" esconde cansancio. Reconocerlo ayuda a darte descanso.'}
+];
+var STRENGTHS=[
+ ['Perseverancia','¿Cuándo seguiste intentando aunque era difícil?'],['Curiosidad','¿Qué cosa aprendiste últimamente solo por interés?'],['Amabilidad','¿A quién ayudaste o trataste con cariño?'],['Honestidad','¿Cuándo dijiste algo difícil pero verdadero?'],['Creatividad','¿Qué idea o solución propia se te ocurrió?'],['Responsabilidad','¿Cuándo cumpliste algo aunque costaba?'],['Valentía','¿Cuándo hiciste algo a pesar del miedo?'],['Humor','¿Cuándo hiciste reír a alguien?'],['Gratitud','¿Qué agradeces y a quién se lo dijiste?'],['Empatía','¿Cuándo comprendiste lo que sentía alguien?'],['Liderazgo','¿Cuándo organizaste o guiaste a otros?'],['Paciencia','¿Cuándo esperaste con calma algo que importaba?'],['Esperanza','¿Cuándo confiaste en que algo mejoraría?'],['Humildad','¿Cuándo reconociste que no sabías o te equivocaste?'],['Trabajo en equipo','¿Cuándo aportaste a un logro grupal?'],['Autocontrol','¿Cuándo frenaste un impulso para elegir mejor?'],['Aprendizaje','¿Qué aprendiste de un error?'],['Generosidad','¿Qué compartiste con otros?'],['Lealtad','¿A quién has acompañado en momentos difíciles?'],['Creer en lo que haces','¿Qué proyecto o causa te importa de verdad?']
+];
+var Q_ASE=[
+ {q:'Un compañero te pide por quinta vez que hagas su parte del trabajo y no tienes tiempo. ¿Qué respuesta es asertiva?',o:[{t:'"Está bien, lo hago", y te quedas hasta tarde.',k:'Pasiva',w:'Callas lo que necesitas y acumulas malestar.'},{t:'"Eres un aprovechado, no te ayudo más."',k:'Agresiva',w:'Ataca a la persona en lugar de plantear el límite.'},{t:'"Hoy no puedo con tu parte. Si quieres, el jueves reviso contigo 20 minutos."',k:'Asertiva',w:'Dice no con claridad y respeto, y ofrece una alternativa realista.'},{t:'Ignorar sus mensajes toda la semana.',k:'Pasivo-agresiva',w:'Evita hablar y expresa el enojo de forma indirecta.'}],ok:2},
+ {q:'Un amigo llega siempre tarde y te molesta. ¿Cuál sería una respuesta asertiva?',o:[{t:'"Siempre eres impuntual, no te importa nadie."',k:'Agresiva',w:'Generaliza y juzga con "siempre" y "nadie".'},{t:'No decir nada y sentirte molesto/a.',k:'Pasiva',w:'Guardar el malestar suele terminar en resentimiento.'},{t:'"Cuando llegas 30 min tarde me siento ignorado/a. Necesito que me avises si no puedes llegar a la hora."',k:'Asertiva',w:'Describe el hecho, dice lo que sientes y pide algo concreto.'},{t:'"Ya no te voy a invitar, a ver si así aprendes."',k:'Pasivo-agresiva',w:'Castiga en lugar de hablar.'}],ok:2},
+ {q:'Tu jefe/a te pide algo más cuando ya estás al límite. ¿Qué respuesta es asertiva?',o:[{t:'"Sí, claro", aunque no puedas.',k:'Pasiva',w:'Aceptar todo suele llevar a agotamiento.'},{t:'"No es mi problema, pídeselo a otro."',k:'Agresiva',w:'Es cortante y cierra el diálogo.'},{t:'"Ahora tengo A y B pendientes. ¿Cuál priorizo, o puedo hacerlo mañana?"',k:'Asertiva',w:'Expone tu situación y busca una solución en conjunto.'},{t:'Aceptar y entregarlo mal a propósito.',k:'Pasivo-agresiva',w:'Expresa el enojo de forma indirecta y te perjudica.'}],ok:2},
+ {q:'Alguien hizo una broma que te incomodó. ¿Cuál es una respuesta asertiva?',o:[{t:'Reírte para disimular.',k:'Pasiva',w:'Ocultas lo que sientes y la persona no sabe que te molestó.'},{t:'"Qué tonto eres, nadie se ríe de tus chistes."',k:'Agresiva',w:'Responde con otro ataque.'},{t:'"Esa broma me incomodó. Prefiero que no bromees con eso."',k:'Asertiva',w:'Es breve, clara y no ataca.'},{t:'Hacer una indirecta en redes sociales.',k:'Pasivo-agresiva',w:'No le hablas directamente.'}],ok:2},
+ {q:'Quieres pedir ayuda con una tarea que te supera. ¿Cuál es una forma asertiva?',o:[{t:'"Necesito ayuda con esto. ¿Puedes darme 15 minutos hoy o mañana?"',k:'Asertiva',w:'Pide con claridad y deja espacio para que la otra persona responda.'},{t:'"Seguro tú ya sabes que estoy ahogado."',k:'Pasivo-agresiva',w:'Esperas que el otro adivine.'},{t:'No pedirla, para no molestar.',k:'Pasiva',w:'Pedir ayuda no es molestar.'},{t:'"Ayúdame ya, no tengo tiempo para explicar."',k:'Agresiva',w:'Es una orden, no una petición.'}],ok:0}
+];
+var Q_LIM=[
+ {q:'Una amiga te pide dinero prestado por tercera vez y aún no devolvió lo anterior. ¿Cuál pone un límite sano?',o:[{t:'"Me importas, pero hasta que no me devuelvas lo anterior no puedo prestarte más."',w:'Es clara, amable y no depende de excusas.'},{t:'"Sí, pero es la última vez", sin cumplirlo.',w:'Un límite que no se sostiene pierde fuerza.'},{t:'Bloquearla sin decir nada.',w:'Evita la conversación en lugar de poner el límite.'}],ok:0},
+ {q:'Tu familia te llama a las 11 p. m. para temas no urgentes. ¿Qué límite es claro?',o:[{t:'"Después de las 10 p. m. descanso. Mañana a las 9 te llamo y lo vemos."',w:'Indica el horario, y ofrece otro momento.'},{t:'No contestar nunca más.',w:'Cierra la comunicación y genera conflicto.'},{t:'Contestar siempre aunque estés agotado/a.',w:'Sacrificas tu descanso.'}],ok:0},
+ {q:'Te invitan a una reunión a la que no quieres ir. ¿Cómo dices que no con amabilidad?',o:[{t:'"Gracias por invitarme, esta vez no podré ir. ¡Que la pasen muy bien!"',w:'Agradece, es directa y no inventa excusas largas.'},{t:'Inventar una excusa complicada.',w:'Las excusas largas se enredan y no son necesarias.'},{t:'Decir que sí y luego no aparecer.',w:'Genera más conflicto que un "no" claro.'}],ok:0},
+ {q:'Alguien revisa tu celular sin permiso. ¿Qué límite es claro?',o:[{t:'"Mi celular es privado. Por favor pídeme permiso antes de usarlo."',w:'Dice qué es lo que quieres y qué esperas.'},{t:'Gritarle y no hablar más.',w:'Se pierde el mensaje.'},{t:'No decir nada para evitar problemas.',w:'El límite sigue sin existir.'}],ok:0},
+ {q:'Un compañero te pide siempre que lo cubras en turnos. ¿Qué respuesta es sana?',o:[{t:'"Esta semana no puedo cubrirte. Si quieres, busca a otra persona."',w:'Firme, sin enojo y sin dar explicaciones largas.'},{t:'"Está bien" y te molestas por dentro.',w:'El malestar se acumula.'},{t:'"Si me vuelves a pedir eso, ya verás."',w:'Es una amenaza, no un límite.'}],ok:0}
+];
+var Q_CON=[
+ {q:'Discutiste con alguien y estás muy enojado/a. ¿Cuál es el primer paso útil?',o:[{t:'Hacer una pausa y respirar antes de responder.',w:'Con enojo alto es difícil pensar con claridad. La pausa da espacio.'},{t:'Decir todo lo que piensas en el momento.',w:'Suele empeorar el conflicto.'},{t:'Ignorar a la persona por semanas.',w:'Aplaza el problema sin resolverlo.'}],ok:0},
+ {q:'Quieres resolver un conflicto con tu pareja. ¿Qué enfoque ayuda más?',o:[{t:'Describir lo que pasó y cómo te sentiste, sin acusar.',w:'Las frases en primera persona reducen la defensa del otro.'},{t:'Enumerar todos los errores del pasado.',w:'Dispersa la conversación y activa la defensa.'},{t:'Esperar a que adivine qué te molestó.',w:'Nadie adivina bien. Mejor decirlo.'}],ok:0},
+ {q:'En medio de la discusión la otra persona se pone a la defensiva. ¿Qué ayuda más?',o:[{t:'Reconocer lo que sí entiendes de su punto antes de explicar el tuyo.',w:'Sentirse entendido baja la tensión.'},{t:'Subir el tono para que te escuche.',w:'Sube la defensa.'},{t:'Terminar la conversación con una frase hiriente.',w:'Deja más daño.'}],ok:0},
+ {q:'Ambos quieren cosas distintas. ¿Qué paso ayuda a llegar a un acuerdo?',o:[{t:'Preguntar qué necesita cada uno y buscar opciones que cubran ambas necesidades.',w:'Mirar necesidades, no solo posiciones, abre alternativas.'},{t:'Insistir hasta que el otro ceda.',w:'Gana uno, pierde la relación.'},{t:'Aceptar siempre para no pelear.',w:'Genera resentimiento.'}],ok:0}
+];
+var Q_LIS=[
+ {q:'Tu amigo/a dice: "Estoy agotado, siento que todo me sale mal". ¿Qué respuesta muestra escucha activa?',o:[{t:'"Suena a que llevas un tiempo cargando mucho. ¿Quieres contarme qué ha sido lo más pesado?"',w:'Refleja lo que dice y abre una pregunta.'},{t:'"No es para tanto, hay gente peor."',w:'Minimiza lo que siente.'},{t:'"Lo que tienes que hacer es dormir más."',w:'Aconseja demasiado rápido.'}],ok:0},
+ {q:'Una compañera cuenta que la criticaron en una reunión. ¿Cuál es una respuesta empática?',o:[{t:'"Debió ser incómodo sentirte expuesta frente a todos. ¿Cómo te quedaste?"',w:'Nombra la emoción y pregunta.'},{t:'"Seguro tenían razón."',w:'Juzga y se pone en su contra.'},{t:'"Yo he pasado algo peor."',w:'Cambia el foco hacia ti.'}],ok:0},
+ {q:'Alguien te cuenta un problema y tú ya sabes cómo resolverlo. ¿Qué haces primero?',o:[{t:'Preguntar: "¿Quieres consejo o solo que te escuche?".',w:'Evita dar consejos que no pidió.'},{t:'Dar la solución completa de inmediato.',w:'Puede sentirse como que no lo escuchaste.'},{t:'Cambiar de tema para animarlo.',w:'Le quita la oportunidad de expresarse.'}],ok:0},
+ {q:'¿Cuál de estas es una señal de escucha activa?',o:[{t:'Mirar a la persona, asentir y parafrasear lo que dijo.',w:'Mostrar atención y comprobar que entendiste.'},{t:'Revisar el celular mientras habla.',w:'Transmite poco interés.'},{t:'Interrumpir para dar tu opinión.',w:'Corta la conversación.'}],ok:0},
+ {q:'Tu hermano/a dice: "Nadie me entiende". ¿Qué respuesta ayuda más?',o:[{t:'"Parece que te sientes muy solo/a con esto. Cuéntame, quiero entenderte."',w:'Valida y abre espacio.'},{t:'"Claro que te entienden, exageras."',w:'Invalida lo que siente.'},{t:'"Es tu culpa por no hablar."',w:'Culpa, no ayuda.'}],ok:0}
+];
+var Q_EMP=[
+ {q:'Tu compañero respondió seco y se fue rápido. ¿Cuál es una interpretación empática (entre varias posibles)?',o:[{t:'Quizás tuvo un mal día. Luego le pregunto cómo está.',w:'Considera otras explicaciones antes de asumir lo peor.'},{t:'Seguro me odia.',w:'Es una lectura de mente que asume lo peor.'},{t:'Ya no le voy a hablar.',w:'Reacciona sin comprobar.'}],ok:0},
+ {q:'Una amiga cancela tu plan por tercera vez. ¿Qué respuesta combina empatía y claridad?',o:[{t:'"Noto que estás con mucho encima. Me gustaría vernos, ¿qué día te viene mejor?"',w:'Reconoce su situación y propone algo concreto.'},{t:'"Claro, a ti nunca te importa."',w:'Acusa y cierra el diálogo.'},{t:'Dejar de escribirle.',w:'Evita en lugar de hablar.'}],ok:0},
+ {q:'Un familiar mayor repite la misma historia. ¿Qué respuesta es más empática?',o:[{t:'Escuchar con calma y preguntar algo nuevo sobre esa historia.',w:'Reconoce lo importante que es para esa persona.'},{t:'"Eso ya me lo dijiste."',w:'Puede herir.'},{t:'Mirar el celular.',w:'Transmite desinterés.'}],ok:0},
+ {q:'Un amigo llora porque no pasó un examen. ¿Qué ayuda más?',o:[{t:'"Se nota que te importaba mucho. Estoy aquí."',w:'Reconoce la emoción y acompaña.'},{t:'"No llores, es solo un examen."',w:'Minimiza.'},{t:'"Te lo dije."',w:'Culpa.'}],ok:0},
+ {q:'Una persona nueva en el grupo está en silencio. ¿Cuál es un gesto empático?',o:[{t:'Invitarla a participar con una pregunta sencilla, sin presionar.',w:'Incluye sin exponer.'},{t:'Ignorarla hasta que hable.',w:'Puede sentirse excluida.'},{t:'Burlarte de su silencio.',w:'Hiere.'}],ok:0}
+];
+
+/* ===== motores: hub de actividades, guías con temporizador, quiz ===== */
+var GT=null,GRUNID=0;
+function stopGuide(){if(GT){clearInterval(GT);GT=null}GRUNID++;try{var c=$('#tab-calm .gcircle');if(c)c.style.transform=''}catch(e){}}
+function reduceMotion(){try{return window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}}
+function secTab(id){var s=$('#tab-'+id);if(!s){s=document.createElement('section');s.id='tab-'+id;s.setAttribute('data-tab',id);s.hidden=true;$('main').appendChild(s)}return s}
+function makeHub(tab,items,host){
+  var grid=el('','dyn-grid wbgrid');var panel=el('','card stack wbpanel');panel.hidden=true;
+  (host||secTab(tab)).appendChild(grid);(host||secTab(tab)).appendChild(panel);
+  var cur=null;
+  function paint(){grid.innerHTML='';var lg=null;items.forEach(function(it){if(it.grp&&it.grp!==lg){lg=it.grp;grid.appendChild(el(it.grp,'wbgrp'))}var b=document.createElement('button');b.type='button';b.className='dyn';b.setAttribute('aria-expanded',String(cur===it.id));
+    var n=(WB().stats[it.id]||0);
+    b.innerHTML='<strong>'+it.t+'</strong><span class="muted small">'+it.d+'</span>'+(n?'<span class="small wbcount">Hecho '+n+(n===1?' vez':' veces')+'</span>':'');
+    b.onclick=function(){open(it.id)};grid.appendChild(b)})}
+  function close(){stopGuide();cur=null;panel.hidden=true;panel.innerHTML='';paint()}
+  function open(id){
+    var it=items.filter(function(x){return x.id===id})[0];if(!it)return;
+    stopGuide();if(cur===id){close();return}
+    cur=id;panel.hidden=false;panel.innerHTML='';
+    var h=el('<h3>'+it.t+'</h3>','row wbhead');var x=document.createElement('button');x.type='button';x.className='btn ghost wbx';x.textContent='Cerrar';x.onclick=close;h.appendChild(x);panel.appendChild(h);
+    var body=el('','stack');panel.appendChild(body);
+    try{it.open(body,close)}catch(e){body.textContent='No se pudo abrir esta actividad.'}
+    paint();panel.scrollIntoView({behavior:reduceMotion()?'auto':'smooth',block:'nearest'})}
+  items.forEach(function(it){ACT[it.id]={tab:tab,open:function(){if(cur!==it.id)open(it.id)}}});
+  paint();return {open:open,close:close,repaint:paint};
+}
+function rateRow(label,id,v){return '<div class="field"><label for="'+id+'">'+label+' <b id="'+id+'v">'+v+'</b>/10</label><input type="range" id="'+id+'" min="0" max="10" step="1" value="'+v+'"></div>'}
+function bindRate(body,id){var r=body.querySelector('#'+id),o=body.querySelector('#'+id+'v');r.oninput=function(){o.textContent=r.value};return r}
+function runGuide(body,cfg){
+  stopGuide();var my=GRUNID;
+  var steps=cfg.steps,tot=steps.reduce(function(a,s){return a+s.s},0);
+  body.innerHTML='<p class="muted">'+cfg.intro+'</p>'+(cfg.note?'<p class="muted small">'+cfg.note+'</p>':'')+rateRow('¿Cuánta tensión sientes ahora?','gpre',5)+'<div class="row"><button class="btn" id="gGo" type="button">Empezar ('+Math.max(1,Math.round(tot/60*10)/10).toString().replace('.',',')+' min aprox.)</button></div>';
+  var pre=bindRate(body,'gpre');
+  body.querySelector('#gGo').onclick=function(){
+    var preV=+pre.value;
+    body.innerHTML='<div class="gstage"><div class="gcircle" aria-hidden="true"></div><div class="gtext" aria-live="polite"></div><div class="gsec muted"></div></div><div class="bar"><i id="gbar"></i></div><div class="row" style="justify-content:center"><button class="btn ghost" id="gPause" type="button">Pausar</button><button class="btn ghost" id="gSkip" type="button">Siguiente</button><button class="btn ghost" id="gStop" type="button">Salir</button></div>';
+    var i=-1,left=0,paused=false,el0=0,c=body.querySelector('.gcircle'),tx=body.querySelector('.gtext'),sc=body.querySelector('.gsec'),bar=body.querySelector('#gbar');
+    function go(){i++;if(i>=steps.length)return fin();var st=steps[i];left=st.s;tx.textContent=st.t;sc.textContent=left+' s';
+      c.style.transitionDuration=(reduceMotion()?0:st.s)+'s';c.style.transform='scale('+(st.sc||1)+')'}
+    function fin(){stopGuide();
+      body.innerHTML='<div class="stack"><h3 style="text-align:center">¡Bien hecho!</h3><p class="muted">Tómate un momento para notar cómo está tu cuerpo.</p>'+rateRow('¿Cuánta tensión sientes ahora?','gpost',preV)+'<div class="row"><button class="btn" id="gSave" type="button">Guardar</button></div></div>';
+      var po=bindRate(body,'gpost');
+      body.querySelector('#gSave').onclick=function(){var d=preV-(+po.value);
+        var calm=WB().calm;calm.push({t:Date.now(),id:cfg.id,a:preV,b:+po.value});if(calm.length>200)calm.shift();
+        wbDone(cfg.id);
+        body.innerHTML='<p>'+(d>0?'Tu tensión bajó de '+preV+' a '+po.value+'. Eso ya es un avance.':d<0?'Tu tensión subió un poco. A veces pasa: cambia de ejercicio o hazlo otro día.':'Tu tensión siguió igual. Está bien: probar es parte del entrenamiento.')+'</p><p class="muted small">Luar no es un tratamiento; si la tensión o la angustia siguen muy altas, habla con alguien de confianza o con un profesional.</p>'}}
+    body.querySelector('#gPause').onclick=function(e){paused=!paused;e.target.textContent=paused?'Seguir':'Pausar';if(paused){c.style.transitionDuration='0s'}else{c.style.transitionDuration=left+'s'}};
+    body.querySelector('#gSkip').onclick=function(){el0+=left;go()};
+    body.querySelector('#gStop').onclick=function(){stopGuide();body.innerHTML='<p class="muted">Está bien parar cuando lo necesites. Puedes volver cuando quieras.</p>'};
+    go();
+    GT=setInterval(function(){if(my!==GRUNID){clearInterval(GT);return}if(paused)return;left--;el0++;
+      if(left<=0){go()}else sc.textContent=left+' s';bar.style.width=Math.min(100,el0/tot*100)+'%'},1000);
+  };
+}
+function breathSteps(pat,n){var out=[];for(var k=0;k<n;k++)pat.forEach(function(p,j){out.push({t:p[0],s:p[1],sc:p[2]})});return out}
+function normQ(it){var opts=it.o.map(function(x,i){return typeof x==='string'?{t:x,k:'',w:'',ok:i===it.ok}:{t:x.t,k:x.k||'',w:x.w||'',ok:i===it.ok}});return {q:it.q,why:it.why||'',opts:shuffle(opts)}}
+function runQuiz(body,cfg){
+  var items=shuffle(cfg.pool).slice(0,cfg.n||5).map(normQ),i=0,score=0;
+  function next(){
+    if(i>=items.length){wbDone(cfg.id);body.innerHTML='<h3>'+score+' de '+items.length+' aciertos</h3><p class="muted">'+(score===items.length?'¡Excelente! Reconoces muy bien estas situaciones.':score>=items.length/2?'Vas bien. Repetir ayuda a afinar la mirada.':'No pasa nada: se aprende con práctica. Lee las explicaciones y prueba otra ronda.')+'</p><div class="row"><button class="btn" id="qAgain" type="button">Otra ronda</button></div>';body.querySelector('#qAgain').onclick=function(){runQuiz(body,cfg)};return}
+    var it=items[i];body.innerHTML='<p class="muted small">'+(cfg.intro||'')+'</p><p class="muted small">Pregunta '+(i+1)+' de '+items.length+'</p><p><strong>'+esc2(it.q)+'</strong></p><div class="stack qopts"></div><div class="qfb" aria-live="polite"></div>';
+    var box=body.querySelector('.qopts'),fb=body.querySelector('.qfb'),done=false;
+    it.opts.forEach(function(o){var b=document.createElement('button');b.type='button';b.className='qopt';b.textContent=o.t;
+      b.onclick=function(){if(done)return;done=true;if(o.ok)score++;
+        Array.prototype.forEach.call(box.children,function(x,k){x.disabled=true;if(it.opts[k].ok)x.classList.add('right');else if(x===b)x.classList.add('wrong')});
+        var correct=it.opts.filter(function(x){return x.ok})[0];
+        fb.innerHTML='<p><strong>'+(o.ok?'Muy bien. ':'Casi. ')+(o.k&&!o.ok?'Esa respuesta es '+esc2(o.k.toLowerCase())+'. ':'')+'</strong>'+esc2(o.ok?(o.w||it.why):((o.w?o.w+' ':'')+(correct.k?'La respuesta '+correct.k.toLowerCase()+': ':'')+(correct.w||it.why)))+'</p>';
+        var n=document.createElement('button');n.type='button';n.className='btn';n.textContent=i+1<items.length?'Siguiente':'Ver resultado';n.onclick=function(){i++;next()};fb.appendChild(n)};
+      box.appendChild(b)});
+  }
+  next();
+}
+function actButtons(ids,host){var row=el('','row wbacts');ids.forEach(function(id){if(id==='help'){var b=mkBtn('Ver ayuda profesional','ghost',function(){show('help')});row.appendChild(b);return}
+  if(!ACT[id])return;var b=mkBtn('Probar: '+(ACTLABEL[id]||id),'ghost',function(){goAct(id)});row.appendChild(b)});host&&host.appendChild(row);return row}
+
+/* ===== Calma (regulación emocional) y Practicar (dinámicas, autoestima, social) ===== */
+var BR=[['Inhala por la nariz',4,1.15],['Exhala lento por la boca',6,.65]];
+function calmItems(){return [
+ {id:'belly',t:'Respiración abdominal',d:'Respira hacia la panza, exhalando más largo. 1 min.',open:function(b){runGuide(b,{id:'belly',intro:'Pon una mano en la panza. Al inhalar, que se infle; al exhalar, que baje.',steps:breathSteps(BR,6)})}},
+ {id:'b478',t:'Respiración 4-7-8',d:'Inhala 4, sostén 7, exhala 8. Muy calmante.',open:function(b){runGuide(b,{id:'b478',intro:'Un patrón con exhalación larga que ayuda a bajar la activación.',note:'Si te mareas, respira normal unos segundos. Evita sostener el aire si tienes alguna condición respiratoria o cardíaca.',steps:breathSteps([['Inhala por la nariz',4,1.15],['Sostén suave',7,1.15],['Exhala por la boca',8,.65]],4)})}},
+ {id:'box',t:'Respiración en caja',d:'4 tiempos iguales: inhala, sostén, exhala, sostén.',open:function(b){runGuide(b,{id:'box',intro:'Un ritmo parejo para enfocarte cuando sientes presión.',steps:breathSteps([['Inhala',4,1.15],['Sostén',4,1.15],['Exhala',4,.65],['Sostén vacío',4,.65]],4)})}},
+ {id:'pmr',t:'Relajación muscular',d:'Tensa y suelta cada zona del cuerpo. 5 min.',open:function(b){var z=['manos y antebrazos (cierra los puños)','brazos (flexiona los bíceps)','frente y ojos (arruga la frente)','mandíbula (aprieta suave los dientes)','hombros (llévalos hacia las orejas)','pecho y espalda (junta los omóplatos)','abdomen (contrae la panza)','piernas (estira y tensa los muslos)','pies (encoge los dedos)'],st=[];z.forEach(function(x){st.push({t:'Tensa suavemente: '+x,s:5,sc:1.1});st.push({t:'Suelta de golpe y nota la diferencia',s:9,sc:.8})});runGuide(b,{id:'pmr',intro:'Vas a tensar cada zona unos 5 segundos y luego soltarla.',note:'Tensa con suavidad, sin dolor. Si tienes una lesión o molestia en una zona, sáltala.',steps:st})}},
+ {id:'scan',t:'Escáner corporal',d:'Recorre tu cuerpo de pies a cabeza con atención.',open:function(b){var z=['los pies','las piernas','las caderas','el abdomen','el pecho','las manos y brazos','los hombros','el cuello','la cara y la mandíbula'],st=[{t:'Cierra los ojos o baja la mirada. Respira normal.',s:10}];z.forEach(function(x){st.push({t:'Lleva tu atención a '+x+'. Solo observa y suelta lo que puedas.',s:14})});st.push({t:'Siente tu cuerpo entero. Respira.',s:12});runGuide(b,{id:'scan',intro:'Observa sensaciones sin juzgarlas ni cambiarlas.',steps:st})}},
+ {id:'imagery',t:'Mi lugar seguro',d:'Imagina un lugar donde te sientas en paz.',open:function(b){var t=['Cierra los ojos y respira lento.','Imagina un lugar donde te sientas tranquilo/a, real o inventado.','¿Qué ves alrededor? Colores, luz, formas.','¿Qué sonidos escuchas?','¿Qué temperatura sientes? ¿Qué textura tocas?','¿Qué aroma hay?','Quédate ahí. Respira y deja que el cuerpo se afloje.','Cuando quieras, vuelve despacio a este lugar.'];runGuide(b,{id:'imagery',intro:'Una visualización guiada para descansar la mente.',steps:t.map(function(x){return {t:x,s:13}})})}},
+ {id:'stretch',t:'Estiramientos suaves',d:'Cuello, hombros y espalda. Sin esfuerzo.',open:function(b){var t=['Cuello: inclina la cabeza hacia la derecha, suave','Cuello: ahora a la izquierda','Hombros: haz círculos hacia atrás','Hombros: círculos hacia adelante','Brazos: estira los brazos arriba y respira','Espalda: entrelaza las manos y estira al frente','Torso: giro suave hacia un lado','Torso: giro suave al otro lado','Sacude manos y brazos y suelta'];runGuide(b,{id:'stretch',intro:'Moverte un poco libera tensión acumulada.',note:'Hazlo sin dolor. Si tienes lesiones, adapta o salta lo que moleste.',steps:t.map(function(x){return {t:x,s:15}})})}},
+ {id:'stop',t:'Pausa STOP',d:'Una pausa de 40 segundos antes de reaccionar.',open:function(b){runGuide(b,{id:'stop',intro:'Útil cuando sientes que vas a reaccionar con enojo o agobio.',steps:[{t:'S: Para. Detén lo que estés haciendo.',s:6},{t:'T: Toma aire. Tres respiraciones lentas.',s:14},{t:'O: Observa. ¿Qué siento, qué pienso, qué pasa en mi cuerpo?',s:14},{t:'P: Procede con una acción que te sirva, no solo con el impulso.',s:10}]})}},
+ {id:'ground',t:'Anclaje 5-4-3-2-1',d:'Vuelve al presente con tus sentidos.',open:function(b){runGuide(b,{id:'ground',intro:'Cuando la mente va muy rápido, los sentidos te traen de vuelta.',steps:[{t:'Mira alrededor y nombra 5 cosas que ves.',s:22},{t:'Nombra 4 cosas que puedes tocar. Tócalas.',s:20},{t:'Nombra 3 sonidos que escuchas.',s:16},{t:'Nombra 2 cosas que hueles (o te gustaría oler).',s:14},{t:'Nombra 1 cosa que saboreas. Respira lento.',s:12}]})}},
+ {id:'wave',t:'Surfear la ola',d:'Observa una emoción intensa hasta que baje.',open:function(b){runGuide(b,{id:'wave',intro:'Las emociones intensas suben, llegan a un pico y bajan. Aquí las observas sin pelear.',steps:[{t:'Ponle nombre a lo que sientes: "esto es enojo / miedo / tristeza".',s:12},{t:'¿Dónde la sientes en el cuerpo? Ubícala.',s:14}].concat(breathSteps([['Respira hacia esa zona, inhalando',4,1.15],['Exhala lento',6,.65]],4)).concat([{t:'Recuerda: esta ola sube y baja. No tienes que actuar ahora.',s:12},{t:'Nota cómo está ahora tu cuerpo.',s:10}])})}},
+ {id:'worry',t:'Descargar preocupaciones',d:'Sácalas de la cabeza y sepáralas.',open:worryPanel},
+ {id:'prio',t:'Ordenar prioridades',d:'Menos agobio: una cosa importante a la vez.',open:prioPanel}
+]}
+function worryPanel(b){
+  b.innerHTML='<p class="muted">Escribe lo que te preocupa, una cosa por línea (máx. 8). Luego separamos lo que depende de ti de lo que no.</p><div class="field"><label for="wrIn">Mis preocupaciones</label><textarea id="wrIn" placeholder="Ej.: no sé si aprobaré el examen&#10;mi amigo me dejó en visto"></textarea></div><div class="row"><button class="btn" id="wrGo" type="button">Clasificar</button></div><div id="wrOut" class="stack"></div>';
+  b.querySelector('#wrGo').onclick=function(){
+    var lines=b.querySelector('#wrIn').value.split('\n').map(function(x){return x.trim()}).filter(Boolean).slice(0,8);if(!lines.length){toast('Escribe al menos una');return}
+    var out=b.querySelector('#wrOut');out.innerHTML='';var st=lines.map(function(){return null}),n=0;
+    lines.forEach(function(l,i){var r=el('<p>'+esc2(l)+'</p>','wbrow');var c=chipRow(['Depende de mí','No depende de mí'],[],false,function(sel){st[i]=sel[0]||null;fin()});r.appendChild(c);out.appendChild(r)});
+    var fb=el('','stack');out.appendChild(fb);
+    function fin(){if(st.some(function(x){return !x}))return;fb.innerHTML='';
+      var mine=lines.filter(function(l,i){return st[i]==='Depende de mí'}),other=lines.filter(function(l,i){return st[i]!=='Depende de mí'});
+      if(mine.length){fb.appendChild(el('<strong>Lo que depende de ti: define un primer paso pequeño</strong>'));mine.forEach(function(l){var r=el('<div class="field"><label>'+esc2(l)+'</label><input type="text" maxlength="100" placeholder="Primer paso (ej.: estudiar 25 min hoy)"></div>');fb.appendChild(r)})}
+      if(other.length)fb.appendChild(el('<strong>Lo que no depende de ti</strong><p class="muted">Aquí el trabajo es soltar: respirar, volver a lo que haces ahora y, si pesa mucho, hablarlo con alguien. Probar: '+other.map(esc2).join(' · ')+'</p>'));
+      var row=el('','row');row.appendChild(mkBtn('Guardar pasos en mi agenda','',function(){var k=0;fb.querySelectorAll('input[type=text]').forEach(function(x){if(x.value.trim()){addTask(x.value.trim(),today(),'');k++}});wbDone('worry');b.innerHTML='<p>Listo. '+(k?k+' paso'+(k>1?'s':'')+' agregado'+(k>1?'s':'')+' a tu agenda.':'Soltar también es avanzar.')+'</p>'}));fb.appendChild(row)}
+  }
+}
+function prioPanel(b){
+  b.innerHTML='<p class="muted">Escribe tus pendientes (uno por línea, máx. 8). Elegirás lo más importante para hoy y lo demás se queda en espera.</p><div class="field"><label for="prIn">Pendientes</label><textarea id="prIn" placeholder="Ej.: entregar informe&#10;lavar ropa&#10;llamar a mi tía"></textarea></div><div class="row"><button class="btn" id="prGo" type="button">Elegir prioridad</button></div><div id="prOut" class="stack"></div>';
+  b.querySelector('#prGo').onclick=function(){var lines=b.querySelector('#prIn').value.split('\n').map(function(x){return x.trim()}).filter(Boolean).slice(0,8);if(!lines.length){toast('Escribe al menos uno');return}
+    var out=b.querySelector('#prOut');out.innerHTML='<strong>¿Cuál es lo más importante o urgente de hoy?</strong>';var sel=[];
+    out.appendChild(chipRow(lines,sel,false,function(){fin()}));var fb=el('','stack');out.appendChild(fb);
+    function fin(){var top=sel[0];if(!top)return;fb.innerHTML='<div class="field"><label for="prStep">Primer paso de "'+esc2(top)+'" (10 a 25 min)</label><input type="text" id="prStep" maxlength="100" placeholder="Ej.: abrir el documento y escribir el título"></div><p class="muted small">En espera por ahora: '+(lines.filter(function(x){return x!==top}).map(esc2).join(' · ')||'nada más')+'</p>';
+      fb.appendChild(mkBtn('Agregar a mi agenda de hoy','',function(){var s=fb.querySelector('#prStep').value.trim();addTask(s||top,today(),'');wbDone('prio');b.innerHTML='<p>Hecho. Hoy solo necesitas empezar por <strong>'+esc2(s||top)+'</strong>.</p>'}))}
+  }
+}
+function stressThermo(host){
+  var c=el('<h3>Termómetro de estrés</h3><p class="muted small">¿Qué tan estresado/a te sientes ahora?</p>','card stack');
+  c.insertAdjacentHTML('beforeend',rateRow('Nivel de estrés','stv',4)+'<div class="row"><button class="btn" id="stGo" type="button">Ver qué me conviene</button></div><div id="stOut" class="stack"></div>');
+  var r=bindRate(c,'stv');
+  c.querySelector('#stGo').onclick=function(){var v=+r.value,o=c.querySelector('#stOut'),ids,msg;
+    if(v<=3){ids=['stop','good'];msg='Nivel bajo. Una pausa corta y notar algo bueno ayudan a mantenerlo así.'}
+    else if(v<=6){ids=['box','stretch','prio'];msg='Nivel medio. Mover el cuerpo, respirar con ritmo o ordenar prioridades puede bajarlo.'}
+    else{ids=['b478','ground','wave'];msg='Nivel alto. Empieza por calmar el cuerpo antes de resolver nada. Si se mantiene así varios días, cuéntaselo a alguien de confianza o a un profesional.'}
+    o.innerHTML='<p>'+msg+'</p>';actButtons(ids,o)};
+  host.appendChild(c)}
+
+/* ----- Practicar ----- */
+function bodyPanel(b){
+  b.innerHTML='<p class="muted">Las emociones se sienten en el cuerpo. Elige una emoción y marca dónde la sientes.</p>';
+  var emo=[],zones=[],all=[];EMO_FAM.forEach(function(f){all=all.concat(f[1])});
+  b.appendChild(el('<strong>1. ¿Qué emoción?</strong>'));b.appendChild(chipRow(all.slice(0,30),emo,false));
+  b.appendChild(el('<strong>2. ¿Dónde la sientes?</strong>'));b.appendChild(chipRow(BODYZ.map(function(z){return z[0]}),zones,true));
+  var out=el('','stack');b.appendChild(out);
+  b.appendChild(mkBtn('Ver lo que significa','',function(){
+    if(!emo.length||!zones.length){toast('Elige una emoción y al menos una zona');return}
+    out.innerHTML='<p><strong>'+esc2(emo[0])+'</strong> sentido en: '+zones.map(esc2).join(', ')+'</p>'+zones.map(function(z){return '<p class="muted">'+esc2(BODYZ.filter(function(x){return x[0]===z})[0][1])+'</p>'}).join('')+'<p class="muted small">Son asociaciones frecuentes, no un diagnóstico: cada persona lo vive distinto.</p>';
+    var tension=zones.some(function(z){return /Hombros|Cabeza|Pecho/.test(z)});actButtons(tension?['stretch','b478']:['scan','belly'],out);wbDone('body')}))}
+function fortPanel(b){
+  var w=WB(),have=Object.keys(w.strong);
+  b.innerHTML='<p class="muted">Elige hasta 5 fortalezas con las que te identificas y anota un ejemplo real de cada una.</p>';
+  var sel=have.slice();b.appendChild(chipRow(STRENGTHS.map(function(s){return s[0]}),sel,true,function(){draw()},5));
+  var out=el('','stack');b.appendChild(out);
+  function draw(){out.innerHTML='';sel.forEach(function(n){var q=STRENGTHS.filter(function(s){return s[0]===n})[0][1];out.appendChild(el('<div class="field"><label>'+esc2(n)+' · <span class="muted">'+esc2(q)+'</span></label><textarea data-n="'+esc2(n)+'" maxlength="200" rows="2">'+esc2(w.strong[n]||'')+'</textarea></div>'))});
+    if(sel.length)out.appendChild(mkBtn('Guardar mis fortalezas','',function(){var ns={};out.querySelectorAll('textarea').forEach(function(t){ns[t.dataset.n]=t.value.trim()});w.strong=ns;save();wbDone('fort');toast('Fortalezas guardadas');b.insertAdjacentHTML('afterbegin','<p><strong>Tus fortalezas:</strong> '+Object.keys(ns).map(esc2).join(', ')+'</p>')}))}
+  draw()}
+function winsPanel(b){
+  var w=WB();b.innerHTML='<p class="muted">Anota algo que lograste, por pequeño que sea. Los logros pequeños también cuentan.</p><div class="field"><label for="wnIn">Hoy logré…</label><textarea id="wnIn" maxlength="200" rows="2" placeholder="Ej.: me levanté a la hora, pedí ayuda, terminé un trabajo"></textarea></div><div id="wnSz"></div><div class="row"><button class="btn" id="wnAdd" type="button">Guardar logro</button></div><div id="wnList" class="stack"></div>';
+  var sz=[];b.querySelector('#wnSz').appendChild(chipRow(['Pequeño','Mediano','Grande'],sz,false));
+  function list(){var l=b.querySelector('#wnList');l.innerHTML='<strong>Mis logros ('+w.wins.length+')</strong>';w.wins.slice(-8).reverse().forEach(function(x){var r=el('<span>'+esc2(x.t)+' <span class="muted small">'+esc2(x.d)+(x.s?' · '+esc2(x.s):'')+'</span></span>','row wbrow');var d=mkBtn('Quitar','ghost',function(){w.wins.splice(w.wins.indexOf(x),1);save();list()});d.style.padding='2px 10px';d.style.fontSize='.8rem';r.appendChild(d);l.appendChild(r)})}
+  b.querySelector('#wnAdd').onclick=function(){var v=b.querySelector('#wnIn').value.trim();if(!v){toast('Escribe tu logro');return}w.wins.push({t:v.slice(0,200),d:today(),s:sz[0]||''});if(w.wins.length>200)w.wins.shift();b.querySelector('#wnIn').value='';save();wbDone('wins');list()};list()}
+function letterPanel(b){
+  var w=WB();b.innerHTML='<p class="muted">Escríbete una carta como si se la escribieras a alguien que quieres mucho y está pasando por lo mismo.</p><div class="field"><label for="lt1">¿Qué es lo difícil que estás viviendo?</label><textarea id="lt1" maxlength="300" rows="2"></textarea></div><div class="field"><label for="lt2">¿Qué le dirías a un amigo en tu lugar?</label><textarea id="lt2" maxlength="300" rows="3"></textarea></div><div class="field"><label for="lt3">Una frase amable para ti esta semana</label><input type="text" id="lt3" maxlength="140"></div><div class="row"><button class="btn" id="ltGo" type="button">Crear mi carta</button></div><div id="ltOut"></div>';
+  b.querySelector('#ltGo').onclick=function(){var a=b.querySelector('#lt1').value.trim(),c=b.querySelector('#lt2').value.trim(),f=b.querySelector('#lt3').value.trim();if(!a||!c){toast('Completa las dos primeras partes');return}
+    var txt='Querido/a yo:\nSé que estás pasando por esto: '+a+'\nTe diría lo mismo que le diría a alguien que quiero: '+c+(f?'\nQuiero que recuerdes esto: '+f:'')+'\nEstoy de tu lado.';
+    w.kind.push({t:'carta',d:today(),x:txt});if(w.kind.length>60)w.kind.shift();save();wbDone('letter');
+    var o=b.querySelector('#ltOut');o.innerHTML='<div class="card" style="background:var(--surface2)">'+esc2(txt).replace(/\n/g,'<br>')+'</div>';var r=el('','row');r.appendChild(mkBtn('Copiar','ghost',function(){copy(txt,this)}));o.appendChild(r)}}
+function criticPanel(b){
+  var w=WB();b.innerHTML='<p class="muted">Atrapa una frase dura que te dices y conviértela en una frase más justa y amable.</p><div class="field"><label for="cr1">La frase que me digo</label><input type="text" id="cr1" maxlength="140" placeholder="Ej.: soy un inútil, todo me sale mal"></div><strong>¿Qué tipo de frase es?</strong><div id="crT"></div><div class="field"><label for="cr2">Si un amigo me dijera eso de sí mismo, ¿qué le respondería?</label><textarea id="cr2" maxlength="200" rows="2"></textarea></div><div class="field"><label for="cr3">Mi versión más amable y realista</label><textarea id="cr3" maxlength="200" rows="2" placeholder="Ej.: me equivoqué en esto, pero puedo aprender y seguir"></textarea></div><div class="row"><button class="btn" id="crGo" type="button">Guardar</button></div><div id="crOut"></div>';
+  var t=[];b.querySelector('#crT').appendChild(chipRow(['Exigente ("debería")','Comparación','Catastrófica','Todo o nada','Etiqueta ("soy un…")'],t,false));
+  b.querySelector('#crGo').onclick=function(){var a=b.querySelector('#cr1').value.trim(),n=b.querySelector('#cr3').value.trim();if(!a||!n){toast('Completa la frase y tu versión amable');return}
+    w.kind.push({t:'voz',d:today(),a:a,n:n,k:t[0]||''});if(w.kind.length>60)w.kind.shift();save();wbDone('critic');b.querySelector('#crOut').innerHTML='<div class="card" style="background:var(--surface2)"><p class="muted small">Antes</p><p>'+esc2(a)+'</p><p class="muted small">Ahora</p><p><strong>'+esc2(n)+'</strong></p></div>'}}
+function iformPanel(b){
+  b.innerHTML='<p class="muted">Arma un mensaje asertivo con la fórmula "Yo siento… cuando… y necesito…".</p><div class="field"><label for="if1">Cuando… (hecho concreto, sin juzgar)</label><input type="text" id="if1" maxlength="120" placeholder="Ej.: llegas tarde sin avisar"></div><div class="field"><label for="if2">Yo siento… (emoción)</label><input type="text" id="if2" maxlength="80" placeholder="Ej.: molestia y preocupación"></div><div class="field"><label for="if3">Necesito… / ¿Podrías…? (pedido concreto)</label><input type="text" id="if3" maxlength="120" placeholder="Ej.: que me avises si vas a demorar"></div><div class="row"><button class="btn" id="ifGo" type="button">Armar mensaje</button></div><div id="ifOut"></div>';
+  b.querySelector('#ifGo').onclick=function(){var a=b.querySelector('#if1').value.trim(),e=b.querySelector('#if2').value.trim(),n=b.querySelector('#if3').value.trim();if(!a||!e||!n){toast('Completa los tres campos');return}
+    var m='Cuando '+a+', yo siento '+e+'. Necesito '+n+'. ¿Podemos hablarlo?';wbDone('asert');
+    var o=b.querySelector('#ifOut');o.innerHTML='<div class="card" style="background:var(--surface2)">'+esc2(m)+'</div><p class="muted small">Dilo con tono calmado, mirando a la persona y dejando espacio para que responda.</p>';var r=el('','row');r.appendChild(mkBtn('Copiar','ghost',function(){copy(m,this)}));o.appendChild(r)}}
+function noPhrases(b){
+  var P=['Gracias por pensar en mí, esta vez no puedo.','Me gustaría ayudarte, pero hoy no me alcanza el tiempo.','No me siento cómodo/a con eso.','Prefiero no hacerlo, gracias.','Déjame pensarlo y te respondo mañana.','Eso no me funciona, pero podría ayudarte de otra forma.'];
+  b.innerHTML='<p class="muted">Frases para decir no con respeto. Tócalas para copiarlas.</p>';P.forEach(function(p){var r=el('<span>'+esc2(p)+'</span>','row wbrow');r.appendChild(mkBtn('Copiar','ghost',function(){copy(p,this)}));b.appendChild(r)});
+  var more=el('','stack');b.appendChild(more);b.appendChild(mkBtn('Practicar con situaciones','',function(){runQuiz(b,{id:'limits',pool:Q_LIM,n:4,intro:'Elige la respuesta que pone el límite con respeto.'})}))}
+function conflictPanel(b){
+  var S6=[['Pausa','Si estás muy alterado/a, respira y espera antes de hablar.'],['Nombra lo que pasó','Describe el hecho sin juzgar ni exagerar.'],['Di cómo te sientes','Usa "yo siento…" en vez de "tú siempre…".'],['Escucha su versión','Pregunta y resume lo que entendiste antes de responder.'],['Busquen necesidades','¿Qué necesita cada uno? Piensen opciones que cubran ambas.'],['Acuerden y revisen','Definan algo concreto y cuándo lo revisarán.']];
+  b.innerHTML='<p class="muted">Seis pasos para hablar de un conflicto sin empeorarlo.</p>';var ol=document.createElement('ol');S6.forEach(function(s){ol.insertAdjacentHTML('beforeend','<li><strong>'+s[0]+':</strong> '+s[1]+'</li>')});b.appendChild(ol);
+  b.appendChild(mkBtn('Practicar con situaciones','',function(){runQuiz(b,{id:'conflict',pool:Q_CON,n:4,intro:'Elige el enfoque que ayuda a resolver.'})}))}
+function practiceItems(){return [
+ {id:'qemo',t:'Adivina la emoción',d:'Juego: ¿qué siente la persona de cada situación?',open:function(b){runQuiz(b,{id:'qemo',pool:Q_EMO,n:5,intro:'Lee la situación y elige la emoción que mejor encaja.'})}},
+ {id:'vocab',t:'Palabras para emociones',d:'Juego: busca la palabra más precisa.',open:function(b){runQuiz(b,{id:'vocab',pool:Q_VOC,n:5,intro:'Cuanto más precisa la palabra, más fácil saber qué necesitas.'})}},
+ {id:'body',t:'¿Dónde lo siento?',d:'Relaciona emociones con sensaciones del cuerpo.',open:bodyPanel},
+ {id:'fort',t:'Mis fortalezas',d:'Autoestima: reconoce tus cualidades con ejemplos.',open:fortPanel},
+ {id:'wins',t:'Mis logros',d:'Autoestima: guarda lo que has conseguido.',open:winsPanel},
+ {id:'letter',t:'Carta amable',d:'Autoestima: escríbete con cariño.',open:letterPanel},
+ {id:'critic',t:'Voz más amable',d:'Autoestima: cambia una frase dura por una justa.',open:criticPanel},
+ {id:'asert',t:'Comunicación asertiva',d:'Social: elige respuestas pasivas, agresivas o asertivas.',open:function(b){b.innerHTML='<div class="row"><button class="btn" id="aQ" type="button">Juego de situaciones</button><button class="btn ghost" id="aF" type="button">Armar un mensaje asertivo</button></div><div id="aB" class="stack"></div>';b.querySelector('#aQ').onclick=function(){runQuiz(b.querySelector('#aB'),{id:'asert',pool:Q_ASE,n:4,intro:'¿Cuál respuesta es asertiva?'})};b.querySelector('#aF').onclick=function(){iformPanel(b.querySelector('#aB'))}}},
+ {id:'limits',t:'Poner límites',d:'Social: frases y práctica para decir no con respeto.',open:noPhrases},
+ {id:'conflict',t:'Resolver conflictos',d:'Social: pasos y práctica.',open:conflictPanel},
+ {id:'listen',t:'Escucha activa',d:'Social: responde de forma que la otra persona se sienta oída.',open:function(b){runQuiz(b,{id:'listen',pool:Q_LIS,n:4,intro:'Elige la respuesta que muestra escucha activa.'})}},
+ {id:'empathy',t:'Empatía',d:'Social: ponte en el lugar del otro.',open:function(b){runQuiz(b,{id:'empathy',pool:Q_EMP,n:4,intro:'Elige la respuesta más empática.'})}}
+]}
+
+/* ===== Diario: intensidad/situación, tips por ánimo, calendario, mapa, pensamientos, hábitos, resumen ===== */
+var MOODCOL=['','#F4A6A6','#F8C79A','#F6E7A1','#BFE3B4','#9ED8C6'];
+var ckX={i:5,sit:[]};
+function injectMoodForm(){
+  var f=$('#ckForm');if(!f||f.querySelector('#ckInt'))return;
+  var note=f.querySelector('.field');
+  var ix=el('<div class="field"><label for="ckInt">Intensidad de lo que sientes <b id="ckIntV">5</b>/10</label><input type="range" id="ckInt" min="1" max="10" value="5"></div>','');
+  var sx=el('<strong>¿Qué situación lo provocó?</strong>');var sc=el('','');
+  f.insertBefore(ix,note);f.insertBefore(sx,note);f.insertBefore(sc,note);
+  var ci=ix.querySelector('#ckInt');ci.oninput=function(){ckX.i=+ci.value;ix.querySelector('#ckIntV').textContent=ci.value};
+  sc.appendChild(chipRow(SITS,ckX.sit,true,null,3));
+  var tips=el('','stack');tips.id='ckTips';tips.hidden=true;f.parentNode.appendChild(tips)}
+function lowStreak(){var by={};S.entries.forEach(function(e){(by[e.d]=by[e.d]||[]).push(e.mood)});var ds=Object.keys(by).sort().slice(-4);if(ds.length<3)return false;return ds.slice(-3).every(function(d){return mean(by[d])<=2})}
+function tipsFor(e){
+  var out=[],seed=(dayHash()+S.entries.length)%97,m=TIP_MOOD[e.mood]||[];
+  if(m.length)out.push(m[seed%m.length]);
+  (e.tags||[]).slice(0,2).forEach(function(t){var a=TIP_TAG[t];if(a&&a.length)out.push(a[seed%a.length])});
+  if(e.mood<=2&&m.length>1){var x=m[(seed+1)%m.length];if(out.indexOf(x)<0)out.push(x)}
+  return out.slice(0,3)}
+function tipsHTML(e,host){
+  host.innerHTML='';var head=el('<h3>Según cómo te sientes</h3><p class="muted small">Ideas generales de bienestar, no consejos médicos ni un diagnóstico.</p>');host.appendChild(head);
+  tipsFor(e).forEach(function(t){var c=el('<strong>'+esc2(t.t)+'</strong><p class="muted">'+esc2(t.b)+'</p>','card wbtip');actButtons(t.act||[],c);host.appendChild(c)});
+  if(lowStreak())host.appendChild(el('<p><strong>He notado varios días seguidos con ánimo bajo.</strong> No es un diagnóstico, pero quizá ayude hablarlo con alguien de confianza o con un profesional.</p>','card legal')),actButtons(['help'],host);
+  host.hidden=false}
+function wbSave(){
+  if(!pickedMood)return;
+  var e=addEntry(pickedMood,pickedTags.slice(),$('#ckNote').value,{i:ckX.i,sit:ckX.sit.slice()});
+  pickedMood=0;pickedTags=[];$('#ckNote').value='';ckX.sit.length=0;ckX.i=5;var ci=$('#ckInt');if(ci){ci.value=5;$('#ckIntV').textContent='5'}
+  $('#ckForm').hidden=true;renderMoods();toast('Registro guardado');
+  var s=$('#ckForm').querySelectorAll('.chip');
+  wbStat('diary',!(S.done[today()]&&S.done[today()].indexOf('diary')>=0));reward2('diary');
+  tipsHTML(e,$('#ckTips'));$('#ckTips').scrollIntoView({behavior:reduceMotion()?'auto':'smooth',block:'nearest'});renderMoods();
+}
+function reward2(id){var t=today();if(!S.done[t])S.done[t]=[];if(S.done[t].indexOf(id)<0){S.done[t].push(id);S.bond+=6}save();try{refreshBond()}catch(e){}}
+
+/* ----- Calendario ----- */
+var calM=new Date(),calMode='mes',calSel=null;
+function moodByDay(){var by={};S.entries.forEach(function(e){(by[e.d]=by[e.d]||[]).push(e)});return by}
+function calPanel(b){
+  var by=moodByDay();
+  function draw(){
+    b.innerHTML='';var tabs=el('','chips');['mes','semana'].forEach(function(m){var c=document.createElement('button');c.type='button';c.className='chip';c.textContent=m==='mes'?'Mes':'Semana';c.setAttribute('aria-pressed',String(calMode===m));c.onclick=function(){calMode=m;draw()};tabs.appendChild(c)});b.appendChild(tabs);
+    var det=el('','stack');
+    if(calMode==='mes'){
+      var y=calM.getFullYear(),mo=calM.getMonth(),first=new Date(y,mo,1),lead=(first.getDay()+6)%7,dim=new Date(y,mo+1,0).getDate();
+      var nav=el('','row');nav.style.justifyContent='space-between';nav.appendChild(mkBtn('‹','ghost',function(){calM=new Date(y,mo-1,1);draw()}));nav.appendChild(el('<strong>'+first.toLocaleDateString('es-PE',{month:'long',year:'numeric'})+'</strong>'));nav.appendChild(mkBtn('›','ghost',function(){calM=new Date(y,mo+1,1);draw()}));b.appendChild(nav);
+      var g=el('','calgrid');['L','M','M','J','V','S','D'].forEach(function(d){g.appendChild(el(d,'calh'))});
+      for(var i=0;i<lead;i++)g.appendChild(el('','calc empty'));
+      var vals=[];
+      for(var d=1;d<=dim;d++)(function(d){var ds=y+'-'+pad(mo+1)+'-'+pad(d),es=by[ds],c=document.createElement('button');c.type='button';c.className='calc'+(ds===today()?' today':'')+(calSel===ds?' sel':'');c.textContent=d;
+        if(es){var a=mean(es.map(function(e){return e.mood}));vals.push(a);c.style.background=MOODCOL[Math.round(a)];c.style.color='#232766';c.setAttribute('aria-label',d+': ánimo '+fx(a,1)+' de 5')}
+        c.onclick=function(){calSel=ds;draw()};g.appendChild(c)})(d);
+      b.appendChild(g);
+      b.appendChild(el('<div class="row small muted">'+[1,2,3,4,5].map(function(k){return '<span><i class="dot" style="background:'+MOODCOL[k]+'"></i>'+MOODS[k]+'</span>'}).join('')+'</div>'));
+      b.appendChild(el(vals.length?'<p>Este mes registraste <strong>'+vals.length+'</strong> días, con un ánimo promedio de <strong>'+fx(mean(vals),1)+'/5</strong>.</p>':'<p class="muted">Sin registros este mes todavía.</p>'));
+    }else{
+      var days=[],t=today();for(var k=6;k>=0;k--)days.push(addDays(t,-k));
+      var bars=el('','wkbars');var vals2=[];
+      days.forEach(function(ds){var es=by[ds],a=es?mean(es.map(function(e){return e.mood})):0;if(es)vals2.push({d:ds,a:a});var col=el('<div class="wkb"><i style="height:'+(a?a/5*100:4)+'%;background:'+(a?MOODCOL[Math.round(a)]:'var(--line)')+'"></i></div><span class="small">'+['D','L','M','M','J','V','S'][parseD(ds).getDay()]+'</span>','wkcol');col.onclick=function(){calSel=ds;draw()};col.style.cursor='pointer';bars.appendChild(col)});
+      b.appendChild(bars);
+      if(vals2.length){var best=vals2.slice().sort(function(x,y){return y.a-x.a})[0],low=vals2.slice().sort(function(x,y){return x.a-y.a})[0];
+        var tg={};S.entries.filter(function(e){return e.d>=days[0]}).forEach(function(e){(e.tags||[]).forEach(function(x){tg[x]=(tg[x]||0)+1})});var top=Object.keys(tg).sort(function(x,y){return tg[y]-tg[x]})[0];
+        b.appendChild(el('<p>Esta semana: promedio <strong>'+fx(mean(vals2.map(function(v){return v.a})),1)+'/5</strong> en '+vals2.length+' día'+(vals2.length>1?'s':'')+'. Mejor día: <strong>'+dayLabel(best.d)+'</strong>'+(vals2.length>1?'; día más bajo: <strong>'+dayLabel(low.d)+'</strong>':'')+(top?'. Lo que más anotaste: <strong>'+esc2(top)+'</strong>':'')+'.</p>'))}
+      else b.appendChild(el('<p class="muted">Aún no hay registros esta semana.</p>'))}
+    b.appendChild(det);
+    if(calSel){det.innerHTML='<h4>'+dayLabel(calSel)+'</h4>';var es=by[calSel]||[];
+      if(!es.length)det.insertAdjacentHTML('beforeend','<p class="muted">Sin registros de ánimo este día.</p>');
+      es.forEach(function(e){det.appendChild(el('<strong>'+MOODS[e.mood]+'</strong>'+(e.i?' · intensidad '+e.i+'/10':'')+((e.tags&&e.tags.length)?'<br><span class="muted small">'+e.tags.map(esc2).join(', ')+'</span>':'')+((e.sit&&e.sit.length)?'<br><span class="muted small">Situación: '+e.sit.map(esc2).join(', ')+'</span>':'')+(e.note?'<p class="muted">'+esc2(e.note)+'</p>':''),'wbrow'))});
+      var h=WB().habits[calSel];if(h&&(h.sleep||h.water))det.appendChild(el('<span class="muted small">Hábitos: '+(h.sleep?'sueño '+fx(h.sleep,1)+' h':'')+(h.water?' · agua '+h.water+' vasos':'')+'</span>'))}
+  }
+  draw()}
+
+/* ----- Mapa de emociones ----- */
+function mapPanel(b){
+  var st={em:[],it:5,w:[],who:[],tr:[],need:[],txt:''};
+  function draw(){
+    b.innerHTML='<p class="muted">Cuatro pasos para entender lo que pasa: qué sientes, cuánto, en qué contexto y qué necesitas.</p>';
+    b.appendChild(el('<strong>1. ¿Qué sientes? (hasta 3)</strong>'));
+    EMO_FAM.forEach(function(f){b.appendChild(el('<span class="muted small">'+f[0]+'</span>'));b.appendChild(chipRow(f[1],st.em,true,null,3))});
+    b.appendChild(el(rateRow('2. ¿Con qué intensidad?','mpI',st.it).replace('/10','/10')));var r=b.querySelector('#mpI');r.oninput=function(){st.it=+r.value;b.querySelector('#mpIv').textContent=r.value};
+    b.appendChild(el('<strong>3. ¿En qué contexto?</strong>'));
+    [['Dónde',CTX_WHERE,'w'],['Con quién',CTX_WHO,'who'],['Qué lo activó',CTX_TRIG,'tr']].forEach(function(x){b.appendChild(el('<span class="muted small">'+x[0]+'</span>'));b.appendChild(chipRow(x[1],st[x[2]],x[2]!=='tr'?true:false,null,2))});
+    b.appendChild(el('<div class="field"><label for="mpT">¿Quieres agregar algo?</label><textarea id="mpT" rows="2" maxlength="250"></textarea></div>'));
+    b.appendChild(el('<strong>4. ¿Qué necesitas ahora? (hasta 2)</strong>'));b.appendChild(chipRow(EMO_NEEDS.map(function(n){return n[0]}),st.need,true,null,2));
+    b.appendChild(mkBtn('Ver mi mapa','',finish))}
+  function finish(){
+    if(!st.em.length||!st.need.length){toast('Elige al menos una emoción y una necesidad');return}
+    st.txt=(b.querySelector('#mpT').value||'').trim();
+    var w=WB();w.maps.push({d:today(),t:Date.now(),em:st.em.slice(),it:st.it,w:st.w.slice(),who:st.who.slice(),tr:st.tr.slice(),need:st.need.slice(),txt:st.txt});if(w.maps.length>150)w.maps.shift();save();wbDone('map');
+    var ids=[];st.need.forEach(function(n){EMO_NEEDS.forEach(function(x){if(x[0]===n)x[2].forEach(function(i){if(ids.indexOf(i)<0)ids.push(i)})})});
+    b.innerHTML='<h4>Tu mapa de hoy</h4><div class="mapbox"><div><span class="muted small">Sientes</span><br><strong>'+st.em.map(esc2).join(', ')+'</strong> · intensidad '+st.it+'/10</div><div><span class="muted small">Contexto</span><br>'+[].concat(st.w,st.who,st.tr).map(esc2).join(' · ')+'</div><div><span class="muted small">Necesitas</span><br><strong>'+st.need.map(esc2).join(', ')+'</strong></div></div>'+
+     st.need.map(function(n){var x=EMO_NEEDS.filter(function(q){return q[0]===n})[0];return '<p class="muted">'+esc2(n)+': '+esc2(x[1])+'</p>'}).join('')+(st.it>=8?'<p><strong>La intensidad es alta.</strong> Primero calma el cuerpo y, si lo sientes muy desbordante, busca a alguien de confianza.</p>':'')+'<p class="muted small">Sugerencias para ahora:</p>';
+    var r=el('','stack');b.appendChild(r);actButtons(ids.slice(0,4),r);
+    var m=WB().maps,c={};m.slice(-30).forEach(function(x){x.em.forEach(function(e){c[e]=(c[e]||0)+1})});var tp=Object.keys(c).sort(function(x,y){return c[y]-c[x]}).slice(0,3);
+    if(m.length>=3)b.appendChild(el('<p class="muted small">En tus últimos mapas, lo que más aparece: '+tp.map(function(x){return esc2(x)+' ('+c[x]+')'}).join(', ')+'.</p>'));
+    b.appendChild(mkBtn('Hacer otro mapa','ghost',function(){st={em:[],it:5,w:[],who:[],tr:[],need:[],txt:''};draw()}))}
+  draw()}
+
+/* ----- Registro de pensamientos ----- */
+var TRAPS=[['Todo o nada','¿Hay un punto medio? ¿Qué tal si fue "regular" y no "un desastre"?'],['Lectura de mente','¿Qué evidencia tengo de lo que piensa el otro? ¿Qué otras explicaciones hay?'],['Catastrofizar','¿Qué es lo peor, lo mejor y lo más probable que podría pasar?'],['Debería / tengo que','¿Quién dijo que debo? ¿Qué diría si fuera "me gustaría" o "preferiría"?'],['Personalizar','¿Todo esto depende solo de mí? ¿Qué otros factores influyeron?'],['Filtro negativo','¿Qué cosas buenas o neutras estoy dejando de ver?'],['Razonamiento emocional','Que lo sienta no significa que sea verdad. ¿Qué hechos hay?']];
+function trPanel(b){
+  var st={em:[],tp:[]};
+  function draw(){
+    var w=WB();b.innerHTML='<p class="muted">Anota lo que pasó y lo que pensaste. Luego mira si hay otra forma, más equilibrada, de interpretarlo.</p>'+
+    '<div class="field"><label for="tr1">1. Situación: ¿qué pasó? (hechos)</label><textarea id="tr1" rows="2" maxlength="250"></textarea></div>'+
+    '<div class="field"><label for="tr2">2. Pensamiento automático: ¿qué me dije?</label><textarea id="tr2" rows="2" maxlength="250"></textarea></div><strong>3. Emoción (hasta 2)</strong>';
+    var all=[];EMO_FAM.forEach(function(f){all=all.concat(f[1])});b.appendChild(chipRow(all,st.em,true,null,2));
+    b.insertAdjacentHTML('beforeend','<div class="field"><label for="tr3">Intensidad <b id="tr3v">50</b>/100</label><input type="range" id="tr3" min="0" max="100" step="5" value="50"></div><strong>4. ¿Hay alguna trampa mental?</strong>');
+    var hint=el('','muted small');b.appendChild(chipRow(TRAPS.map(function(t){return t[0]}),st.tp,true,function(){hint.innerHTML=st.tp.map(function(n){return '<p><strong>'+esc2(n)+':</strong> '+esc2(TRAPS.filter(function(t){return t[0]===n})[0][1])+'</p>'}).join('')},3));b.appendChild(hint);
+    b.insertAdjacentHTML('beforeend','<div class="field"><label for="tr4">5. Evidencia a favor del pensamiento</label><textarea id="tr4" rows="2" maxlength="250"></textarea></div><div class="field"><label for="tr5">6. Evidencia en contra</label><textarea id="tr5" rows="2" maxlength="250"></textarea></div><div class="field"><label for="tr6">7. Interpretación alternativa, más equilibrada</label><textarea id="tr6" rows="2" maxlength="250" placeholder="¿Qué le diría a un amigo? ¿Qué otra explicación posible hay?"></textarea></div><div class="field"><label for="tr7">¿Cuánta intensidad tiene la emoción ahora? <b id="tr7v">50</b>/100</label><input type="range" id="tr7" min="0" max="100" step="5" value="50"></div><div class="row"><button class="btn" id="trSave" type="button">Guardar registro</button></div><div id="trOut"></div>');
+    ['tr3','tr7'].forEach(function(id){var r=b.querySelector('#'+id);r.oninput=function(){b.querySelector('#'+id+'v').textContent=r.value}});
+    b.querySelector('#trSave').onclick=function(){var q=function(i){return b.querySelector('#'+i).value.trim()};
+      if(!q('tr1')||!q('tr2')||!st.em.length||!q('tr6')){toast('Completa situación, pensamiento, emoción y alternativa');return}
+      var e={d:today(),t:Date.now(),sit:q('tr1'),th:q('tr2'),em:st.em.slice(),i0:+q('tr3'),tp:st.tp.slice(),pro:q('tr4'),con:q('tr5'),alt:q('tr6'),i1:+q('tr7')};
+      w.trs.push(e);if(w.trs.length>200)w.trs.shift();save();wbDone('tr');
+      var dd=e.i0-e.i1;b.querySelector('#trOut').innerHTML='<div class="card" style="background:var(--surface2)"><p>'+(dd>0?'La intensidad bajó de '+e.i0+' a '+e.i1+' al mirarlo desde otro ángulo.':'La intensidad se mantuvo. A veces hace falta más práctica o hablarlo con alguien.')+'</p><p class="muted small">Pensamiento alternativo: '+esc2(e.alt)+'</p></div>'};
+    var hist=el('','stack');b.appendChild(hist);
+    if(w.trs.length){hist.appendChild(el('<strong>Mis últimos registros ('+w.trs.length+')</strong>'));w.trs.slice(-5).reverse().forEach(function(e){var d=document.createElement('details');d.className='tip';d.innerHTML='<summary><span><span class="cat">'+esc2(e.d)+' · '+e.em.map(esc2).join(', ')+' '+e.i0+'→'+e.i1+'</span><br>'+esc2(e.th)+'</span></summary><div class="body"><p><strong>Situación:</strong> '+esc2(e.sit)+'</p>'+(e.tp&&e.tp.length?'<p><strong>Trampas:</strong> '+e.tp.map(esc2).join(', ')+'</p>':'')+(e.pro?'<p><strong>A favor:</strong> '+esc2(e.pro)+'</p>':'')+(e.con?'<p><strong>En contra:</strong> '+esc2(e.con)+'</p>':'')+'<p><strong>Alternativa:</strong> '+esc2(e.alt)+'</p></div>';hist.appendChild(d)})}
+  }
+  draw()}
+
+/* ----- Hábitos ----- */
+var HAB_CK=['Me moví o hice ejercicio','Comí a mis horas','Salí a la luz natural','Un rato sin pantallas','Hablé con alguien querido','Dediqué tiempo a un hobby','Respiré o medité','Descansé un rato en el día'];
+var PLEASANT=['Escuchar música','Salir a caminar','Comer algo rico','Ver una serie o película','Leer','Dibujar o crear','Jugar','Estar con una mascota','Ordenar mi espacio','Llamar a alguien','Estar en la naturaleza','Bailar'];
+var habDate=null;
+function habPanel(b){
+  var w=WB();if(!habDate)habDate=today();
+  function H(){var h=w.habits[habDate];if(!h)h=w.habits[habDate]={sleep:0,sq:0,water:0,ck:[],pl:[]};return h}
+  function draw(){
+    var h=H();b.innerHTML='';
+    var nav=el('','row');nav.style.justifyContent='space-between';nav.appendChild(mkBtn('‹','ghost',function(){habDate=addDays(habDate,-1);draw()}));nav.appendChild(el('<strong>'+dayLabel(habDate)+'</strong>'));var nx=mkBtn('›','ghost',function(){if(habDate<today()){habDate=addDays(habDate,1);draw()}});nav.appendChild(nx);b.appendChild(nav);
+    function stepper(label,key,min,max,step,unit){var d=el('<div class="field"><label>'+label+'</label></div>');var r=el('','row');r.appendChild(mkBtn('−','ghost',function(){h[key]=Math.max(min,Math.round(((h[key]||0)-step)*10)/10);v.textContent=fx(h[key],1)+' '+unit;save()}));var v=el('<strong>'+fx(h[key]||0,1)+' '+unit+'</strong>');r.appendChild(v);r.appendChild(mkBtn('+','ghost',function(){h[key]=Math.min(max,Math.round(((h[key]||0)+step)*10)/10);v.textContent=fx(h[key],1)+' '+unit;save()}));d.appendChild(r);return d}
+    b.appendChild(stepper('Horas que dormiste','sleep',0,14,.5,'h'));
+    var sq=[];if(h.sq)sq.push(['','Mala','Regular','Buena','Muy buena','Excelente'][h.sq]);
+    b.appendChild(el('<strong>Calidad del sueño</strong>'));b.appendChild(chipRow(['Mala','Regular','Buena','Muy buena','Excelente'],sq,false,function(){h.sq=sq[0]?['Mala','Regular','Buena','Muy buena','Excelente'].indexOf(sq[0])+1:0;save()}));
+    b.appendChild(stepper('Vasos de agua','water',0,14,1,'vasos'));
+    b.appendChild(el('<strong>Hábitos de hoy</strong>'));b.appendChild(chipRow(HAB_CK,h.ck,true,function(){save()}));
+    b.appendChild(el('<strong>Actividades agradables</strong>'));
+    var pl=PLEASANT.concat(h.pl.filter(function(x){return PLEASANT.indexOf(x)<0}));b.appendChild(chipRow(pl,h.pl,true,function(){save()}));
+    var add=el('<div class="field"><label for="plC">Agregar otra actividad agradable</label><input type="text" id="plC" maxlength="40"></div>');b.appendChild(add);
+    b.appendChild(mkBtn('Guardar hábitos del día','',function(){var c=b.querySelector('#plC').value.trim();if(c&&h.pl.indexOf(c)<0)h.pl.push(c.slice(0,40));save();if(h.sleep||h.water||h.ck.length||h.pl.length){wbDone('habits');toast('Hábitos guardados')}draw()}));
+    // resumen 7 días
+    var t=today(),days=[];for(var k=6;k>=0;k--)days.push(addDays(t,-k));
+    var sl=days.map(function(d){return (w.habits[d]||{}).sleep||0}),sd=sl.filter(Boolean),wt=days.map(function(d){return (w.habits[d]||{}).water||0}).filter(Boolean),ckc={};
+    days.forEach(function(d){((w.habits[d]||{}).ck||[]).forEach(function(x){ckc[x]=(ckc[x]||0)+1})});
+    var sm=el('<h4>Últimos 7 días</h4>','stack');
+    var bars=el('','wkbars');days.forEach(function(d,i){bars.appendChild(el('<div class="wkb"><i style="height:'+(sl[i]?Math.min(100,sl[i]/10*100):4)+'%;background:'+(sl[i]?(sl[i]>=7?MOODCOL[5]:sl[i]>=6?MOODCOL[3]:MOODCOL[2]):'var(--line)')+'"></i></div><span class="small">'+['D','L','M','M','J','V','S'][parseD(d).getDay()]+'</span>','wkcol'))});sm.appendChild(bars);
+    sm.appendChild(el('<p class="muted small">Barras de sueño (verde: 7 h o más). Meta general para adultos: entre 7 y 9 horas, aunque cada persona es distinta.</p>'));
+    sm.appendChild(el('<p>'+(sd.length?'Sueño promedio: <strong>'+fx(mean(sd),1)+' h</strong> ('+sd.filter(function(x){return x>=7}).length+' de '+sd.length+' noches con 7 h o más). ':'')+(wt.length?'Agua promedio: <strong>'+fx(mean(wt),1)+' vasos</strong>. ':'')+(!sd.length&&!wt.length?'Aún no hay datos esta semana.':'')+'</p>'));
+    var tc=Object.keys(ckc).sort(function(x,y){return ckc[y]-ckc[x]}).slice(0,3);if(tc.length)sm.appendChild(el('<p class="muted">Hábitos más constantes: '+tc.map(function(x){return esc2(x)+' ('+ckc[x]+')'}).join(', ')+'.</p>'));
+    var by=moodByDay(),lo=[],hi=[];Object.keys(w.habits).forEach(function(d){var s=w.habits[d].sleep;if(s&&by[d]){var a=mean(by[d].map(function(e){return e.mood}));(s<6.5?lo:hi).push(a)}});
+    if(lo.length>=2&&hi.length>=2&&Math.abs(mean(hi)-mean(lo))>=.5)sm.appendChild(el('<p>En tus registros, los días con <strong>más sueño</strong> tu ánimo promedió <strong>'+fx(mean(hi),1)+'</strong> frente a <strong>'+fx(mean(lo),1)+'</strong> cuando dormiste menos. Es una pauta tuya, no una conclusión médica.</p>'));
+    if(sd.length>=3&&mean(sd)<6)sm.appendChild(el('<p class="muted">Estás durmiendo poco. Prueba una hora fija para levantarte y menos pantallas la última hora. Si el problema persiste, consulta con un profesional.</p>'));
+    b.appendChild(sm)}
+  draw()}
+
+/* ----- Resumen para llevar a consulta ----- */
+function reportText(){
+  var w=WB(),from=addDays(today(),-29),es=S.entries.filter(function(e){return e.d>=from}),L=[];
+  L.push('Resumen de bienestar (últimos 30 días) · generado en Luar Mind por la propia persona. No es un diagnóstico.');
+  if(es.length){L.push('Registros de ánimo: '+es.length+' en '+Object.keys(moodByDay()).filter(function(d){return d>=from}).length+' días. Promedio: '+fx(mean(es.map(function(e){return e.mood})),1)+'/5.');
+    var c={},s={};es.forEach(function(e){(e.tags||[]).forEach(function(t){c[t]=(c[t]||0)+1});(e.sit||[]).forEach(function(t){s[t]=(s[t]||0)+1})});
+    var tp=function(o){return Object.keys(o).sort(function(a,b){return o[b]-o[a]}).slice(0,4).map(function(k){return k+' ('+o[k]+')'}).join(', ')};
+    if(Object.keys(c).length)L.push('Emociones más anotadas: '+tp(c)+'.');if(Object.keys(s).length)L.push('Situaciones frecuentes: '+tp(s)+'.');
+    var ii=es.filter(function(e){return e.i}).map(function(e){return e.i});if(ii.length)L.push('Intensidad media: '+fx(mean(ii),1)+'/10.')}else L.push('Sin registros de ánimo en este período.');
+  var sl=Object.keys(w.habits).filter(function(d){return d>=from&&w.habits[d].sleep}).map(function(d){return w.habits[d].sleep});if(sl.length)L.push('Sueño promedio: '+fx(mean(sl),1)+' h (en '+sl.length+' días anotados).');
+  var tr=w.trs.filter(function(x){return x.d>=from});if(tr.length)L.push('Registros de pensamientos: '+tr.length+'. Pensamientos recurrentes: '+tr.slice(-3).map(function(x){return '"'+x.th+'"'}).join('; ')+'.');
+  var mp=w.maps.filter(function(x){return x.d>=from}),nd={};mp.forEach(function(x){x.need.forEach(function(n){nd[n]=(nd[n]||0)+1})});if(mp.length)L.push('Necesidades que identificó: '+Object.keys(nd).sort(function(a,b){return nd[b]-nd[a]}).slice(0,3).join(', ')+'.');
+  L.push('Lo que me gustaría contar o preguntar: ______');return L.join('\n')}
+function reportPanel(b){var t=reportText();b.innerHTML='<p class="muted">Un resumen simple de tus últimos 30 días para mostrar a un profesional de salud mental si decides consultar. Sale solo de lo que tú registraste.</p><div class="card" style="background:var(--surface2);white-space:pre-wrap">'+esc2(t)+'</div>';var r=el('','row');r.appendChild(mkBtn('Copiar resumen','',function(){copy(t,this)}));b.appendChild(r);wbStatOnce('report')}
+function wbStatOnce(k){var w=WB();if(!w.stats[k])wbStat(k,true)}
+function diaryItems(){return [
+ {id:'cal',t:'Calendario emocional',d:'Mira tu ánimo por semana o mes.',open:calPanel},
+ {id:'map',t:'Mapa de emociones',d:'Qué sientes, cuánto, dónde y qué necesitas.',open:mapPanel},
+ {id:'tr',t:'Registro de pensamientos',d:'Situación, pensamiento, emoción y otra mirada.',open:trPanel},
+ {id:'habits',t:'Seguimiento de hábitos',d:'Sueño, agua, descanso y actividades agradables.',open:habPanel},
+ {id:'report',t:'Resumen para consulta',d:'Tus últimos 30 días, listos para compartir.',open:reportPanel}
+]}
+
+/* ===== Evolución de Luar, recomendaciones, autocuidado, ayuda, chat, tips ===== */
+var ACC_SVG={
+ gorro:'<g transform="rotate(14 100 30)"><path d="M100 2L76 38h48z" fill="#F9CBE9" stroke="#9A7BD8" stroke-width="2.5" stroke-linejoin="round"/><path d="M88 22h24M82 32h36" stroke="#fff" stroke-width="3" opacity=".8"/><circle cx="100" cy="3" r="6" fill="#FFE27A" stroke="#E3A92B" stroke-width="2"/></g>',
+ flor:'<g transform="translate(140 36)">'+[0,72,144,216,288].map(function(a){return '<circle cx="0" cy="-9" r="7" fill="#F9A8D4" transform="rotate('+a+')"/>'}).join('')+'<circle r="5" fill="#FFE27A"/></g>',
+ audifonos:'<path d="M26 98A74 74 0 0 1 174 98" fill="none" stroke="#7A6BB8" stroke-width="7" stroke-linecap="round"/><rect x="14" y="88" width="16" height="30" rx="8" fill="#9A7BD8" stroke="#fff" stroke-width="2"/><rect x="170" y="88" width="16" height="30" rx="8" fill="#9A7BD8" stroke="#fff" stroke-width="2"/>',
+ lazo:'<g transform="translate(64 34) rotate(-18)"><path d="M0 0L-18-11V11z" fill="#F59CCB" stroke="#D1639F" stroke-width="2"/><path d="M0 0L18-11V11z" fill="#F59CCB" stroke="#D1639F" stroke-width="2"/><circle r="5" fill="#D1639F"/></g>',
+ anteojos:'<g fill="rgba(255,255,255,.18)" stroke="#232766" stroke-width="3.5"><circle cx="74" cy="92" r="19"/><circle cx="126" cy="92" r="19"/></g><path d="M93 92h14M55 90l-14-4M145 90l14-4" stroke="#232766" stroke-width="3.5" stroke-linecap="round"/>',
+ bufanda:'<path d="M42 140Q100 180 158 140L152 160Q100 196 48 160Z" fill="#F59CCB" stroke="#D1639F" stroke-width="2.5" stroke-linejoin="round"/><path d="M60 156l-6 28h20l4-24z" fill="#F9A8D4" stroke="#D1639F" stroke-width="2.5" stroke-linejoin="round"/><path d="M64 168h14M62 176h14" stroke="#fff" stroke-width="2.5" opacity=".8"/>',
+ corbatin:'<g transform="translate(100 160)"><path d="M0 0L-20-11V11z" fill="#5A5ED4" stroke="#fff" stroke-width="2"/><path d="M0 0L20-11V11z" fill="#5A5ED4" stroke="#fff" stroke-width="2"/><circle r="5" fill="#A9B4FF" stroke="#fff" stroke-width="1.5"/></g>',
+ estrellas:[[58,24,9],[100,8,12],[142,24,9]].map(function(p){return '<path transform="translate('+p[0]+' '+p[1]+') scale('+p[2]/9+')" d="M0-9l2.4 6.6L9 0l-6.6 2.4L0 9l-2.4-6.6L-9 0l6.6-2.4z" fill="#FFE27A" stroke="#E3A92B" stroke-width="1.2"/>'}).join(''),
+ corona:'<path d="M70 36L76 8l14 16 10-20 10 20 14-16 6 28z" fill="#FFD76A" stroke="#E3A92B" stroke-width="3" stroke-linejoin="round"/><circle cx="76" cy="8" r="3.5" fill="#F59CCB"/><circle cx="100" cy="4" r="3.5" fill="#9ADCF6"/><circle cx="124" cy="8" r="3.5" fill="#F59CCB"/>'
+};
+var DECO_SVG={
+ luna:'<circle cx="250" cy="40" r="20" fill="#FFF3B8" opacity=".85"/><circle cx="242" cy="34" r="18" fill="#2C3A82" opacity=".35"/>'+[[40,30],[90,60],[160,25],[210,70],[60,110]].map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="2" fill="#fff" opacity=".8"/>'}).join(''),
+ jardin:'<path d="M0 270Q75 240 150 262T300 255V300H0z" fill="#8FD6A8" opacity=".55"/>'+[[40,255],[110,262],[190,250],[260,258]].map(function(p){return '<g transform="translate('+p[0]+' '+p[1]+')"><path d="M0 0v-24" stroke="#4FA06E" stroke-width="3"/>'+[0,72,144,216,288].map(function(a){return '<circle cx="0" cy="-30" r="6" fill="#F9A8D4" transform="rotate('+a+' 0 -24)"/>'}).join('')+'<circle cx="0" cy="-24" r="4" fill="#FFE27A"/></g>'}).join(''),
+ playa:'<path d="M0 240Q75 225 150 240T300 235V300H0z" fill="#7CC4E8" opacity=".5"/><path d="M0 265Q75 252 150 266T300 262V300H0z" fill="#F6E1A8" opacity=".75"/><circle cx="240" cy="50" r="22" fill="#FFD76A" opacity=".8"/>',
+ bosque:[[40,250,50],[100,262,40],[200,255,56],[262,262,42]].map(function(p){return '<g transform="translate('+p[0]+' '+p[1]+')"><rect x="-4" y="-6" width="8" height="18" fill="#9A7A5A"/><path d="M0-'+p[2]+'L-'+p[2]*.45+' -4h'+p[2]*.9+'z" fill="#5FAF7E"/></g>'}).join('')+'<path d="M0 285h300v15H0z" fill="#5FAF7E" opacity=".5"/>',
+ biblioteca:'<rect x="10" y="236" width="280" height="8" fill="#9A7A5A" opacity=".6"/>'+[[20,'#F59CCB'],[36,'#9ADCF6'],[52,'#B8A8F6'],[68,'#FFD76A'],[84,'#8FD6A8'],[200,'#F59CCB'],[216,'#B8A8F6'],[232,'#9ADCF6'],[248,'#FFD76A']].map(function(p){return '<rect x="'+p[0]+'" y="'+(200+(p[0]%5)*3)+'" width="12" height="'+(36-(p[0]%5)*3)+'" rx="2" fill="'+p[1]+'" opacity=".8"/>'}).join(''),
+ espacio:[[40,40,3],[100,90,2],[170,30,2.5],[250,80,3],[60,150,2],[230,150,2]].map(function(p){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+p[2]+'" fill="#fff" opacity=".9"/>'}).join('')+'<circle cx="240" cy="48" r="16" fill="#F59CCB" opacity=".7"/><ellipse cx="240" cy="48" rx="26" ry="5" fill="none" stroke="#FFE27A" stroke-width="2" opacity=".7"/><circle cx="50" cy="210" r="10" fill="#9ADCF6" opacity=".7"/>'
+};
+function applyEquip(){
+  var w=WB(),svg=petBox.querySelector('svg');if(!svg)return;var g=svg.querySelector('#acc');if(!g){g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='acc';svg.appendChild(g)}
+  var html='';['neck','face','head'].forEach(function(s){var id=w.eq[s];if(id&&w.unlock[id]&&ACC_SVG[id])html+=ACC_SVG[id]});g.innerHTML=html;
+  var st=document.querySelector('.card.stage');if(st){st.setAttribute('data-deco',w.eq.deco||'luna');var L=st.querySelector('.decolayer');if(!L){L=document.createElement('div');L.className='decolayer';L.setAttribute('aria-hidden','true');st.insertBefore(L,st.firstChild)}
+    var d=w.unlock[w.eq.deco]?w.eq.deco:'luna';L.innerHTML='<svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMax slice">'+DECO_SVG[d]+'</svg>'}
+}
+var EVO_LEVELS=['Semilla','Brote','Compañero','Guía','Estrella'];
+function renderEvo(){
+  var host=$('#evo');if(!host)return;var w=WB(),n=totalActs(),lv=Math.min(EVO_LEVELS.length-1,Math.floor(n/12));
+  var nxt=(lv+1)*12;
+  host.innerHTML='<div class="row" style="justify-content:space-between"><h2>Evolución de Luar</h2><span class="muted small">Actividades de bienestar: <b>'+n+'</b></span></div><p class="muted">Cada ejercicio, registro o práctica ayuda a Luar a crecer. Etapa actual: <strong>'+EVO_LEVELS[lv]+'</strong>'+(lv<EVO_LEVELS.length-1?' · faltan '+(nxt-n)+' actividades para la siguiente':'')+'.</p><div class="bar"><i style="width:'+(lv<EVO_LEVELS.length-1?((n%12)/12*100):100)+'%"></i></div>';
+  var gA=el('<strong>Accesorios</strong>');host.appendChild(gA);var grid=el('','evogrid');host.appendChild(grid);
+  ITEMS.forEach(function(it){var un=!!w.unlock[it.id],eq=w.eq[it.slot]===it.id,p=it.prog?it.prog():null;
+    var b=document.createElement('button');b.type='button';b.className='evoit'+(un?'':' locked')+(eq?' on':'');b.setAttribute('aria-pressed',String(eq));
+    b.innerHTML='<svg viewBox="0 0 200 200" aria-hidden="true">'+(un?'':'<g opacity=".35">')+ACC_SVG[it.id]+(un?'':'</g>')+'</svg><span class="small"><b>'+it.n+'</b><br>'+(un?(eq?'Puesto':'Toca para poner'):'🔒 '+it.hint+(p?' ('+Math.min(p[0],p[1])+'/'+p[1]+')':''))+'</span>';
+    b.onclick=function(){if(!un){toast(it.hint);return}w.eq[it.slot]=eq?'':it.id;save();renderEvo();applyEquip();hop()};grid.appendChild(b)});
+  host.appendChild(el('<strong>Decoraciones</strong>'));var g2=el('','evogrid');host.appendChild(g2);
+  DECOS.forEach(function(it){var un=!!w.unlock[it.id],eq=(w.eq.deco||'luna')===it.id,p=it.prog?it.prog():null;
+    var b=document.createElement('button');b.type='button';b.className='evoit'+(un?'':' locked')+(eq?' on':'');b.setAttribute('aria-pressed',String(eq));
+    b.innerHTML='<svg viewBox="0 0 300 300" class="decoprev" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><rect width="300" height="300" fill="#47307F" opacity=".55"/>'+DECO_SVG[it.id]+'</svg><span class="small"><b>'+it.n+'</b><br>'+(un?(eq?'Puesta':'Toca para poner'):'🔒 '+it.hint+(p?' ('+Math.min(p[0],p[1])+'/'+p[1]+')':''))+'</span>';
+    b.onclick=function(){if(!un){toast(it.hint);return}w.eq.deco=it.id;save();renderEvo();applyEquip()};g2.appendChild(b)});
+}
+
+/* ----- recomendaciones ----- */
+var LIKE_OPTS={'Respirar y relajarme':['belly','b478','box','pmr','scan','imagery','stop','ground'],'Escribir':['tr','letter','worry','wins','critic','map'],'Moverme':['stretch','step'],'Juegos y retos':['qemo','vocab','body','asert','listen','empathy'],'Practicar con otros':['asert','limits','conflict','listen','empathy'],'Ordenar y planificar':['prio','habits','worry']};
+var REC_ALL=['belly','b478','box','pmr','scan','imagery','stretch','stop','ground','wave','worry','prio','good','step','tr','map','habits','qemo','vocab','body','fort','wins','letter','critic','asert','limits','conflict','listen','empathy'];
+function recommend(){
+  var w=WB(),sc={},why={};REC_ALL.forEach(function(id){sc[id]=Math.random()*.4;why[id]=[]});
+  function add(id,v,r){if(sc[id]===undefined)return;sc[id]+=v;if(r&&why[id].indexOf(r)<0)why[id].push(r)}
+  var es=S.entries.slice(-3),last=es[es.length-1];
+  if(last){var recent=last.d>=addDays(today(),-2);
+    if(recent){(TIP_MOOD[last.mood]||[]).forEach(function(t){t.act.forEach(function(i){add(i,2,'por cómo te sentiste ('+MOODS[last.mood].toLowerCase()+')')})});
+      (last.tags||[]).forEach(function(tg){(TIP_TAG[tg]||[]).forEach(function(t){t.act.forEach(function(i){add(i,3,'porque anotaste '+tg.toLowerCase())})})})}}
+  w.likes.forEach(function(l){(LIKE_OPTS[l]||[]).forEach(function(i){add(i,2,'porque te gusta: '+l.toLowerCase())})});
+  Object.keys(w.fav).forEach(function(i){add(i,Math.min(2,w.fav[i]/3),'sueles hacerla')});
+  var td=S.done[today()]||[];REC_ALL.forEach(function(i){if(td.indexOf(i)>=0)sc[i]-=5});
+  var yh=w.habits[addDays(today(),-1)]||w.habits[today()];if(yh&&yh.sleep&&yh.sleep<6){['stretch','scan','imagery'].forEach(function(i){add(i,2,'dormiste poco')})}
+  if(!(w.habits[today()]&&(w.habits[today()].sleep||w.habits[today()].ck.length)))add('habits',1,'hoy no los has registrado');
+  if(!S.entries.length)add('qemo',2,'para empezar a conocer tus emociones');
+  var top=REC_ALL.slice().sort(function(a,b){return sc[b]-sc[a]}).slice(0,3);
+  return top.map(function(i){return {id:i,why:why[i][0]||'para variar y sumar bienestar'}})}
+function renderForYou(){
+  var host=$('#forYou');if(!host)return;var w=WB();host.innerHTML='<h2>Para ti hoy</h2><p class="muted small">Ideas según tus registros y lo que te gusta. No son diagnósticos ni tratamiento.</p>';
+  recommend().forEach(function(r){var row=el('<div><strong>'+esc2(ACTLABEL[r.id]||r.id).replace(/^./,function(c){return c.toUpperCase()})+'</strong><br><span class="muted small">Te lo sugiero '+esc2(r.why)+'.</span></div>','row wbrow');row.style.justifyContent='space-between';row.appendChild(mkBtn('Probar','',function(){goAct(r.id)}));host.appendChild(row)});
+  var d=document.createElement('details');d.className='tip';d.innerHTML='<summary><span>Mis preferencias</span></summary><div class="body"></div>';var bd=d.querySelector('.body');bd.innerHTML='<p class="muted small">¿Qué tipo de actividades te gustan más?</p>';bd.appendChild(chipRow(Object.keys(LIKE_OPTS),w.likes,true,function(){save();renderForYou()}));host.appendChild(d);
+  if(w.likes.length)d.open=true}
+
+/* ----- autocuidado en agenda ----- */
+var CARE_TPL=[['sleep','Dormir a mi hora','22:30','Sueño'],['night','Rutina nocturna sin pantallas','21:30','Sueño'],['rest','Descanso de 10 minutos','16:00','Descanso'],['walk','Caminar 20 minutos','18:00','Hábito'],['fun','Hacer algo que disfruto','19:30','Recreación'],['water','Tomar agua','11:00','Hábito'],['eat','Comer a mis horas','13:30','Hábito'],['sun','Salir a la luz natural','09:30','Hábito']];
+function ensurePlan(){var w=WB(),t=today(),ch=false;Object.keys(w.plan).forEach(function(id){var p=w.plan[id];if(!S.tasks.some(function(x){return x.tpl===id&&x.date===t})){S.tasks.push({id:Date.now()+Math.floor(Math.random()*100000),text:p.text,date:t,time:p.time||'',done:false,tpl:id});ch=true}});
+  var old=addDays(t,-14);S.tasks=S.tasks.filter(function(x){return !(x.tpl&&x.date<old)});if(ch)save()}
+function renderCare(){
+  var host=$('#careAgenda');if(!host)return;var w=WB();host.innerHTML='<h3>Agenda de autocuidado</h3><p class="muted small">Programa descanso, sueño, recreación y hábitos. Puedes repetirlos cada día.</p>';
+  var rep={v:true};host.appendChild(el('<label class="small"><input type="checkbox" id="careRep" checked> Repetir cada día</label>'));
+  var g=el('','stack');CARE_TPL.forEach(function(c){var on=!!w.plan[c[0]],r=el('<div><strong>'+c[1]+'</strong> <span class="muted small">'+c[3]+' · '+(on?(w.plan[c[0]].time||c[2]):c[2])+'</span></div>','row wbrow');r.style.justifyContent='space-between';
+    if(on)r.appendChild(mkBtn('Quitar rutina','ghost',function(){delete w.plan[c[0]];S.tasks=S.tasks.filter(function(x){return !(x.tpl===c[0]&&!x.done&&x.date>=today())});save();renderAgenda();renderCare()}));
+    else r.appendChild(mkBtn('Agregar','',function(){var rp=host.querySelector('#careRep').checked;if(rp){w.plan[c[0]]={text:c[1],time:c[2]};ensurePlan()}else{S.tasks.push({id:Date.now(),text:c[1],date:today(),time:c[2],done:false,tpl:c[0]})}save();renderAgenda();renderCare();toast('Agregado a tu agenda')}));g.appendChild(r)});host.appendChild(g);
+  host.appendChild(el('<p class="muted small">Dormir lo suficiente, moverte, comer a horas y tener ratos agradables ayudan al ánimo. Marca cada tarea cuando la hagas para ganar vínculo con Luar.</p>'))}
+
+/* ----- ayuda emocional ----- */
+function renderHelpSpace(){
+  var n=$('#numbers');if(!n||$('#helpSpace'))return;
+  var c=el('','card stack');c.id='helpSpace';
+  c.innerHTML='<h2>Espacio de ayuda emocional</h2><p class="muted">Pedir ayuda es una forma de cuidarte. Esto es una orientación general, no una evaluación.</p>'+
+  '<details class="tip"><summary><span>¿Cuándo conviene buscar ayuda profesional?</span></summary><div class="body"><ul><li>Tristeza, ansiedad o irritabilidad que duran más de dos semanas.</li><li>Cambios fuertes en el sueño o el apetito que no mejoran.</li><li>Dificultad para estudiar, trabajar o relacionarte.</li><li>Pensamientos de hacerte daño o de no querer vivir (en ese caso, busca ayuda de inmediato).</li><li>Consumo de alcohol u otras sustancias para calmarte.</li><li>Crisis de angustia repetidas, o recuerdos de algo que pasó que te siguen afectando.</li></ul></div></details>'+
+  '<details class="tip"><summary><span>¿A dónde acudir en Perú?</span></summary><div class="body"><ul><li><strong>Centros de Salud Mental Comunitarios (Minsa):</strong> atención psicológica y psiquiátrica en tu distrito. Pregunta en tu centro de salud cuál te corresponde.</li><li><strong>EsSalud:</strong> si estás asegurado/a, pide cita en salud mental.</li><li><strong>Línea 113 (opción de salud mental):</strong> orientación gratuita.</li><li><strong>Universidades e institutos:</strong> muchos tienen consultorio psicológico a bajo costo.</li><li><strong>Psicólogo/a particular:</strong> pide su número de colegiatura y verifícalo en el Colegio de Psicólogos del Perú.</li></ul><p class="muted small">Los servicios cambian; confirma horarios y requisitos antes de ir.</p></div></details>'+
+  '<details class="tip"><summary><span>Cómo prepararte para la primera cita</span></summary><div class="body"><ol><li>Anota desde cuándo te sientes así y qué lo empeora o mejora.</li><li>Lleva tu resumen de 30 días (botón de abajo).</li><li>Menciona medicinas que tomas y tu historial de salud.</li><li>Haz una lista de preguntas. Puedes decir "no sé cómo explicarlo": también sirve.</li><li>Si el primer profesional no te hace sentir cómodo/a, puedes probar con otro.</li></ol></div></details>'+
+  '<details class="tip"><summary><span>Si alguien cercano está mal</span></summary><div class="body"><ul><li>Escucha sin juzgar y pregunta cómo puedes ayudar.</li><li>Evita frases como "no es para tanto".</li><li>Acompáñalo/a a buscar apoyo profesional.</li><li>Si hay riesgo inmediato, llama a emergencias y no lo/la dejes solo/a.</li></ul></div></details>';
+  var r=el('','row');r.appendChild(mkBtn('Ver mi resumen de 30 días','ghost',function(){show('log');setTimeout(function(){goAct('report')},80)}));c.appendChild(r);
+  n.parentNode.insertBefore(c,n.nextSibling)}
+
+/* ----- chat emocional ----- */
+function reflectQ(){var l=lastMood()||3;var pool=l<=2?REFLECT.low:l>=4?REFLECT.high:REFLECT.mid;return pick(pool)}
+function wbChat(){
+  var sug=$('#chatSug');if(!sug||sug.querySelector('[data-wb]'))return;
+  function chip(t,fn){var c=document.createElement('button');c.type='button';c.className='chip';c.textContent=t;c.setAttribute('data-wb','1');c.onclick=fn;sug.insertBefore(c,sug.firstChild);return c}
+  chip('Mapa de emociones',function(){goAct('map')});
+  chip('Quiero desahogarme',function(){var b=addBubble('ai','<p>Estoy aquí para escucharte. Cuéntame con calma qué pasó y cómo te sentiste; no hay respuestas correctas ni apuros.</p><p>Cuando termines, si quieres, te hago una pregunta para reflexionar.</p>');try{inp.focus()}catch(e){}});
+  chip('Pregunta de reflexión',function(){var q=reflectQ();var b=addBubble('ai','<p><strong>Para reflexionar:</strong> '+esc2(q)+'</p><p class="muted small">Respóndeme aquí, o escríbelo en tu registro de pensamientos si necesitas más espacio.</p>');var r=el('','row');r.appendChild(mkBtn('Otra pregunta','ghost',function(){chat_reflect()}));r.appendChild(mkBtn('Registro de pensamientos','ghost',function(){goAct('tr')}));b.querySelector('.txt').appendChild(r);wbStatOnce('reflect')});
+}
+function chat_reflect(){var q=reflectQ();addBubble('ai','<p><strong>Para reflexionar:</strong> '+esc2(q)+'</p>')}
+
+/* ----- tips: más categorías y tips por ánimo ----- */
+function wbTips(){
+  TIPCATS=['Todos','Para mi ánimo','Inteligencia emocional','Ansiedad','Ánimo','Autoestima','Empatía','Estrés','Sueño','Relaciones'];
+  TIPS2.forEach(function(t){TIPS.push(t)});
+  var orig=renderTips;
+  renderTips=function(){
+    if(tipCat==='Para mi ánimo'){
+      var cb=$('#tipCats');cb.innerHTML='';TIPCATS.forEach(function(c){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=c;b.setAttribute('aria-pressed',String(tipCat===c));b.onclick=function(){tipCat=c;renderTips()};cb.appendChild(b)});
+      var l=$('#tipList');l.innerHTML='';var e=S.entries[S.entries.length-1];
+      if(!e){l.innerHTML='<div class="card"><p class="muted">Registra cómo te sientes en Inicio y aquí verás tips pensados para tu ánimo.</p></div>';return}
+      var h=el('','stack');l.appendChild(h);tipsHTML(e,h);
+      l.insertAdjacentHTML('afterbegin','<p class="muted small">Basado en tu último registro: '+MOODS[e.mood]+(e.tags.length?' ('+e.tags.map(esc2).join(', ')+')':'')+'.</p>');return}
+    orig()}
+}
+
+/* ===== arranque del módulo de bienestar ===== */
+function wbInit(){
+  WB();ACTLABEL.map='mapa de emociones';ACTLABEL.cal='calendario';ACTLABEL.report='resumen para consulta';
+  injectMoodForm();
+  var calm=secTab('calm');calm.innerHTML='';
+  calm.appendChild(el('<h2>Calma</h2><p class="muted">Ejercicios de respiración, relajación y manejo del estrés. Cada uno dura entre 1 y 5 minutos. Elige el que se sienta más cómodo.</p><p class="muted small">Si te sientes en peligro o piensas en hacerte daño, usa el botón rojo "Necesito ayuda ahora". Estos ejercicios acompañan, no reemplazan a un profesional.</p>','card stack'));
+  stressThermo(calm);
+  var ch=el('<h3 class="sec" style="margin:4px 0">Ejercicios</h3>');calm.appendChild(ch);
+  makeHub('calm',calmItems(),calm);
+  var pr=secTab('practice');pr.innerHTML='';
+  pr.appendChild(el('<h2>Practicar</h2><p class="muted">Juegos y ejercicios cortos para reconocer emociones, fortalecer tu autoestima y mejorar tus habilidades sociales.</p>','card stack'));
+  var pi=practiceItems();['qemo','vocab','body'].forEach(function(i){pi.filter(function(x){return x.id===i})[0].grp='Reconocer emociones'});['fort','wins','letter','critic'].forEach(function(i){pi.filter(function(x){return x.id===i})[0].grp='Autoestima'});['asert','limits','conflict','listen','empathy'].forEach(function(i){pi.filter(function(x){return x.id===i})[0].grp='Habilidades sociales'});
+  makeHub('practice',pi,pr);
+  var lg=$('#tab-log');var h2=lg.querySelector('h2');if(h2)h2.textContent='Diario emocional';
+  var box=document.createElement('div');box.className='stack';box.id='diaryTools';box.appendChild(el('<h3 class="sec" style="margin:4px 0">Herramientas del diario</h3><p class="muted small">Para registrar un ánimo nuevo (con intensidad y situación), ve a Inicio.</p>'));lg.insertBefore(box,lg.children[1]);
+  var go=mkBtn('Registrar mi ánimo ahora','ghost',function(){show('home');setTimeout(function(){$('#moods').scrollIntoView({block:'center'})},60)});box.appendChild(go);
+  makeHub('log',diaryItems(),box);
+  ACT.good={tab:'home',open:function(){if(openDynId!=='good')openDyn('good')}};ACT.step={tab:'home',open:function(){if(openDynId!=='step')openDyn('step')}};ACT.thought={tab:'home',open:function(){if(openDynId!=='thought')openDyn('thought')}};ACT.breath={tab:'home',open:function(){if(openDynId!=='breath')openDyn('breath')}};
+  ACT.diary={tab:'home',open:function(){var m=$('#moods');if(m)m.scrollIntoView({block:'center'})}};ACT.help={tab:'help',open:function(){}};
+  var home=$('#tab-home'),care=$('#care');
+  var fy=el('','card stack');fy.id='forYou';var ev=el('','card stack');ev.id='evo';home.insertBefore(fy,care);home.insertBefore(ev,care);
+  var ag=$('#tab-agenda'),cc=el('','card stack');cc.id='careAgenda';ag.appendChild(cc);ensurePlan();renderCare();
+  renderHelpSpace();wbChat();wbTips();
+  checkUnlocks(true);applyEquip();renderEvo();renderForYou();
+}
+
+/* ===== racha de días y recordatorios ===== */
+function STK(){var s=S.streak;if(!s||typeof s!=='object')s=S.streak={last:'',cur:0,best:0,days:[]};if(!Array.isArray(s.days))s.days=[];return s}
+function updateStreak(){
+  var s=STK(),t=today();if(s.last===t)return;
+  var gap=s.last?Math.round((parseD(t)-parseD(s.last))/864e5):0;
+  s.cur=(s.last&&gap===1)?s.cur+1:1;
+  s.last=t;if(s.cur>s.best)s.best=s.cur;
+  if(s.days.indexOf(t)<0)s.days.push(t);s.days=s.days.slice(-60);
+  if(s.cur>=1&&[3,7,14,30,60,100].indexOf(s.cur)>=0){S.coins+=s.cur>=30?15:s.cur>=7?8:4;setTimeout(function(){toast('¡Racha de '+s.cur+' días con Luar! Ganaste monedas.');chime()},1200)}
+  save()}
+function renderStreak(){
+  var host=$('#streakBadge');if(!host)return;var s=STK(),t=today(),dots='';
+  for(var k=6;k>=0;k--){var d=addDays(t,-k),on=s.days.indexOf(d)>=0;dots+='<i class="sdot'+(on?' on':'')+(d===t?' now':'')+'" title="'+d+'"></i>'}
+  var live=s.last===t||s.last===addDays(t,-1)?s.cur:0;
+  host.innerHTML='<div class="row" style="justify-content:space-between;width:100%"><strong>Racha: '+live+(live===1?' día':' días')+'</strong><span class="muted small">Mejor: '+s.best+'</span></div><div class="sdots" aria-hidden="true">'+dots+'</div>'+(live>=2?'<span class="muted small">Entra cada día, aunque sea un minuto.</span>':'<span class="muted small">Vuelve mañana para empezar tu racha.</span>')}
+
+/* ----- sonido suave dentro de la app (usa el volumen multimedia; la notificación del sistema usa el de notificaciones) ----- */
+var AC=null;
+function chime(force){
+  var N=NS();if(!force&&!N.chime)return;
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();
+    [[659.25,0],[880,.28],[1318.5,.6]].forEach(function(n){var o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime+n[1];o.type='sine';o.frequency.value=n[0];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.09,t+.06);g.gain.exponentialRampToValueAtTime(.0001,t+1.5);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+1.6)})}catch(e){}}
+function NS(){var n=S.notif;if(!n||typeof n!=='object')n=S.notif={on:false,checkin:'20:00',tasks:true,chime:false,vib:true,quiet:true,sent:{}};if(!n.sent)n.sent={};return n}
+function notifOK(){return ('Notification' in window)&&Notification.permission==='granted'}
+function inQuiet(d){var N=NS();if(!N.quiet)return false;var m=d.getHours()*60+d.getMinutes();return m>=22*60+30||m<7*60}
+function hm(s){var p=(s||'').split(':');return (+p[0]||0)*60+(+p[1]||0)}
+function fireNote(title,body,tag){
+  var opt={body:body,icon:'icons/icon-192.png',badge:'icons/icon-192.png',tag:tag,silent:false,renotify:false,data:{url:'./'}};
+  if(NS().vib)opt.vibrate=[180,90,180];
+  return (navigator.serviceWorker&&navigator.serviceWorker.getRegistration?navigator.serviceWorker.getRegistration():Promise.resolve(null)).then(function(reg){
+    if(reg&&reg.showNotification)return reg.showNotification(title,opt);
+    var n=new Notification(title,opt);return n}).then(function(){if(NS().chime&&document.visibilityState==='visible')chime()}).catch(function(){})}
+var CHECKMSG=['¿Cómo te sientes hoy? Luar te espera un ratito.','Un minuto para ti: registra tu ánimo con Luar.','Luar quiere saber cómo estuvo tu día.','Pausa corta: respira y cuéntale a Luar cómo vas.'];
+function dueNotes(now){
+  var N=NS(),t=dstr(now),m=now.getHours()*60+now.getMinutes(),out=[];
+  if(!N.on||inQuiet(now))return out;
+  var hasToday=S.entries.some(function(e){return e.d===t});
+  if(N.checkin&&m>=hm(N.checkin)&&m<hm(N.checkin)+120&&!hasToday)out.push({k:'ci-'+t,tag:'luar-checkin',title:'Luar Mind',body:CHECKMSG[(parseD(t).getDate())%CHECKMSG.length]+(STK().cur>=2?' Tu racha es de '+STK().cur+' días.':'')});
+  if(N.tasks)S.tasks.forEach(function(x){if(x.date===t&&x.time&&!x.done){var tm=hm(x.time);if(m>=tm&&m<tm+60)out.push({k:'tk-'+x.id+'-'+t,tag:'luar-task-'+x.id,title:x.tpl?'Autocuidado':'Recordatorio',body:(S.lock&&S.lock.on)?'Tienes un recordatorio pendiente':x.text})}});
+  return out}
+function checkNotes(){
+  var N=NS();if(!N.on||!notifOK())return;var now=new Date();
+  dueNotes(now).forEach(function(d){if(N.sent[d.k])return;N.sent[d.k]=1;fireNote(d.title,d.body,d.tag)});
+  var keep={},t=today();Object.keys(N.sent).forEach(function(k){if(k.slice(-10)===t)keep[k]=1});N.sent=keep;save();mirrorReminders()}
+function mirrorReminders(){
+  try{if(!('caches' in window))return;var N=NS(),t=today();
+    var data={on:N.on&&notifOK(),vib:N.vib,quiet:N.quiet,checkin:N.checkin,date:t,hasEntry:S.entries.some(function(e){return e.d===t}),streak:STK().cur,tasks:N.tasks?S.tasks.filter(function(x){return x.date===t&&x.time&&!x.done}).map(function(x){return {id:x.id,text:(S.lock&&S.lock.on)?'Tienes un recordatorio pendiente':x.text,time:x.time,tpl:!!x.tpl}}):[],sent:Object.keys(N.sent)};
+    caches.open('luar-data').then(function(c){return c.put('reminders.json',new Response(JSON.stringify(data),{headers:{'content-type':'application/json'}}))})}catch(e){}}
+function registerPeriodic(){
+  try{if(!navigator.serviceWorker)return;navigator.serviceWorker.ready.then(function(reg){if(reg.periodicSync&&navigator.permissions){navigator.permissions.query({name:'periodic-background-sync'}).then(function(p){if(p.state==='granted')reg.periodicSync.register('luar-reminders',{minInterval:6*3600*1000}).catch(function(){})}).catch(function(){})}})}catch(e){}}
+function enableNotes(cb){
+  if(!('Notification' in window)){toast('Este navegador no permite notificaciones');cb&&cb(false);return}
+  var go=function(p){var N=NS();if(p==='granted'){N.on=true;save();registerPeriodic();mirrorReminders();toast('Recordatorios activados');cb&&cb(true)}else{N.on=false;save();toast(p==='denied'?'Las notificaciones están bloqueadas en este navegador. Actívalas desde los ajustes del sitio.':'No se activaron los recordatorios');cb&&cb(false)}};
+  if(Notification.permission==='granted')go('granted');else if(Notification.permission==='denied')go('denied');else{try{var r=Notification.requestPermission(go);if(r&&r.then)r.then(go)}catch(e){go('denied')}}}
+function renderNotifCard(){
+  var host=$('#notifCard');if(!host)return;var N=NS(),sup='Notification' in window,perm=sup?Notification.permission:'unsupported';
+  host.innerHTML='<h2>Recordatorios y sonido</h2><p class="muted small">Luar te avisa con notificaciones del teléfono, que suenan con el volumen de <strong>notificaciones</strong> (no el multimedia) y pueden vibrar.</p>';
+  var on=N.on&&perm==='granted';
+  var r=el('<span><strong>Recordatorios</strong><br><span class="muted small">'+(!sup?'Este navegador no los admite.':perm==='denied'?'Bloqueados en el navegador.':on?'Activados.':'Desactivados.')+'</span></span>','row');r.style.justifyContent='space-between';
+  if(sup&&perm!=='denied')r.appendChild(mkBtn(on?'Desactivar':'Activar','',function(){if(on){N.on=false;save();renderNotifCard()}else enableNotes(function(){renderNotifCard()})}));host.appendChild(r);
+  if(perm==='denied')host.appendChild(el('<p class="muted small">Para permitirlas: toca el candado junto a la dirección de la web (o los ajustes de la app instalada) → Notificaciones → Permitir.</p>'));
+  var f=el('','stack');
+  f.innerHTML='<div class="field"><label for="ntTime">Aviso diario para registrar tu ánimo</label><input type="time" id="ntTime" value="'+esc2(N.checkin)+'"></div>'+
+   '<label class="small"><input type="checkbox" id="ntTasks"'+(N.tasks?' checked':'')+'> Avisarme de las tareas de mi agenda con hora (incluye autocuidado)</label>'+
+   '<label class="small"><input type="checkbox" id="ntVib"'+(N.vib?' checked':'')+'> Vibrar</label>'+
+   '<label class="small"><input type="checkbox" id="ntQuiet"'+(N.quiet?' checked':'')+'> No molestar entre 10:30 p. m. y 7:00 a. m.</label>'+
+   '<label class="small"><input type="checkbox" id="ntChime"'+(N.chime?' checked':'')+'> Sonido suave dentro de la app (usa el volumen multimedia)</label>';
+  host.appendChild(f);
+  function bind(id,k){var c=f.querySelector(id);c.onchange=function(){N[k]=c.checked;save();mirrorReminders()}}
+  bind('#ntTasks','tasks');bind('#ntVib','vib');bind('#ntQuiet','quiet');bind('#ntChime','chime');
+  f.querySelector('#ntTime').onchange=function(e){N.checkin=e.target.value||'20:00';save();mirrorReminders()};
+  var row=el('','row');row.appendChild(mkBtn('Probar notificación','ghost',function(){if(!notifOK()){enableNotes(function(ok){if(ok)fireNote('Luar Mind','Así te avisaré. Respira y sigue con tu día.','luar-test');renderNotifCard()});return}fireNote('Luar Mind','Así te avisaré. Respira y sigue con tu día.','luar-test');try{if(NS().vib&&navigator.vibrate)navigator.vibrate([180,90,180])}catch(e){}}));
+  row.appendChild(mkBtn('Escuchar sonido suave','ghost',function(){chime(true)}));host.appendChild(row);
+  host.appendChild(el('<details class="tip"><summary><span>Cómo cambiar el sonido de la notificación</span></summary><div class="body"><p>El sonido de una notificación web lo decide tu teléfono, no la app. Por eso usa el volumen de notificaciones.</p><ul><li><strong>Android:</strong> mantén pulsada una notificación de Luar → Ajustes → Sonido, y elige un tono tranquilo. Si instalaste la app, también en Ajustes → Apps → Luar Mind → Notificaciones.</li><li><strong>iPhone/iPad:</strong> funciona al instalar la app en la pantalla de inicio (iOS 16.4 o superior). El tono es el del sistema.</li></ul><p class="muted small">Con la app cerrada, el aviso depende del navegador y del teléfono: puede llegar con retraso o no llegar si el sistema ahorra batería. Con la app abierta o en segundo plano, llega a la hora.</p></div></details>'));
+}
+function wbInit2(){
+  updateStreak();NS();
+  var bond=document.querySelector('.stage .bond');if(bond&&!$('#streakBadge')){var b=el('','streak');b.id='streakBadge';bond.parentNode.insertBefore(b,bond.nextSibling)}
+  renderStreak();
+  var th=$('#themeChips');if(th&&!$('#notifCard')){var card=th.closest('.card');var c=el('','card stack');c.id='notifCard';card.parentNode.insertBefore(c,card.nextSibling)}
+  renderNotifCard();
+  setInterval(checkNotes,30000);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible'){updateStreak();renderStreak();checkNotes()}});
+  setTimeout(function(){checkNotes();if(NS().on)registerPeriodic()},1500);
+}
+
+/* ===== PIN, respaldo y plan de seguridad ===== */
+function LK(){var l=S.lock;if(!l||typeof l!=='object')l=S.lock={on:false,salt:'',hash:'',len:4,after:60,fails:0,until:0};return l}
+function b64e(u){var s='';u=new Uint8Array(u);for(var i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);return btoa(s)}
+function b64d(s){var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+function cryptoOK(){return !!(window.crypto&&crypto.subtle&&window.TextEncoder)}
+function kdf(text,salt,iter,usage){var enc=new TextEncoder();return crypto.subtle.importKey('raw',enc.encode(text),'PBKDF2',false,['deriveBits','deriveKey']).then(function(k){
+  if(usage)return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:iter,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,usage);
+  return crypto.subtle.deriveBits({name:'PBKDF2',salt:salt,iterations:iter,hash:'SHA-256'},k,256)})}
+function pinHash(pin,saltB64){
+  if(!cryptoOK()){var h=5381,t=saltB64+':'+pin;for(var r=0;r<2000;r++)for(var i=0;i<t.length;i++)h=((h*33)^t.charCodeAt(i))>>>0;return Promise.resolve('f:'+h)}
+  return kdf(pin,b64d(saltB64),150000).then(b64e)}
+function newSalt(){var u=new Uint8Array(16);if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(u);else for(var i=0;i<16;i++)u[i]=Math.floor(Math.random()*256);return b64e(u)}
+function setPin(pin){var l=LK(),s=newSalt();return pinHash(pin,s).then(function(h){l.salt=s;l.hash=h;l.len=pin.length;l.on=true;l.fails=0;l.until=0;save()})}
+function checkPin(pin){var l=LK();return pinHash(pin,l.salt).then(function(h){return h===l.hash})}
+var awayAt=0,lockEl=null,lockBuf='';
+function buildLock(){
+  if(lockEl)return;lockEl=document.createElement('div');lockEl.className='lockscr';lockEl.id='lockScr';lockEl.hidden=true;lockEl.setAttribute('role','dialog');lockEl.setAttribute('aria-modal','true');lockEl.setAttribute('aria-label','Luar Mind bloqueada');
+  lockEl.innerHTML='<img src="'+LOGO+'" alt="" width="72" height="72" style="border-radius:20px"><h2>Luar Mind está bloqueada</h2><p class="muted" id="lkMsg" aria-live="polite">Escribe tu PIN</p><div class="pdots" id="lkDots" aria-hidden="true"></div><div class="keypad" id="lkPad"></div><div class="row" style="justify-content:center"><button class="btn ghost" id="lkHelp" type="button">Necesito ayuda ahora</button><button class="btn ghost" id="lkForgot" type="button">Olvidé mi PIN</button></div><div id="lkExtra" class="stack" style="max-width:340px;width:100%" hidden></div>';
+  document.body.appendChild(lockEl);
+  var pad=lockEl.querySelector('#lkPad');['1','2','3','4','5','6','7','8','9','','0','⌫'].forEach(function(k){var b=document.createElement('button');b.type='button';b.className='key';b.textContent=k;if(!k){b.disabled=true;b.style.visibility='hidden'}b.setAttribute('aria-label',k==='⌫'?'Borrar':k);b.onclick=function(){keyIn(k)};pad.appendChild(b)});
+  lockEl.querySelector('#lkHelp').onclick=function(){var x=lockEl.querySelector('#lkExtra');x.hidden=!x.hidden||x.dataset.m!=='help';x.dataset.m='help';x.hidden=false;x.innerHTML='<div class="card"><strong>Si estás en peligro ahora</strong><p class="muted small">Puedes llamar sin desbloquear la app.</p>'+NUMS.slice(0,4).map(function(n){return '<p><a class="call" href="tel:'+n[0].replace(/\D/g,'')+'">Llamar al '+n[0]+'</a> <span class="muted small">'+esc2(n[1])+'</span></p>'}).join('')+'</div>'};
+  lockEl.querySelector('#lkForgot').onclick=function(){var x=lockEl.querySelector('#lkExtra');x.dataset.m='forgot';x.hidden=false;x.innerHTML='<div class="card stack"><strong>¿Olvidaste tu PIN?</strong><p class="muted small">Por tu privacidad no hay forma de saltarlo. Puedes borrar todos los datos de este dispositivo y empezar de cero (luego podrás restaurar un respaldo si tienes uno).</p></div>';var c=x.firstChild,b=mkBtn('Borrar todo y empezar de nuevo','warn',function(){if(!b._a){b._a=true;b.textContent='Confirmar: se borrará todo';setTimeout(function(){b._a=false;b.textContent='Borrar todo y empezar de nuevo'},5000);return}try{localStorage.removeItem(KEY)}catch(e){}location.reload()});c.appendChild(b)};
+  document.addEventListener('keydown',function(e){if(lockEl.hidden)return;if(/^\d$/.test(e.key))keyIn(e.key);else if(e.key==='Backspace')keyIn('⌫')});
+}
+function lockDots(){var l=LK(),d=lockEl.querySelector('#lkDots'),h='';for(var i=0;i<l.len;i++)h+='<i class="'+(i<lockBuf.length?'on':'')+'"></i>';d.innerHTML=h}
+function setInert(v){['header.top','main'].forEach(function(s){var e=document.querySelector(s);if(e)e.inert=v})}
+function showLock(){var l=LK();if(!l.on)return;buildLock();lockBuf='';lockEl.hidden=false;lockEl.querySelector('#lkExtra').hidden=true;setInert(true);lockDots();lkMsg('Escribe tu PIN');try{document.activeElement&&document.activeElement.blur()}catch(e){}}
+function lkMsg(t,bad){var m=lockEl.querySelector('#lkMsg');m.textContent=t;m.style.color=bad?'var(--danger)':''}
+function keyIn(k){
+  var l=LK();if(lockEl.hidden)return;var now=Date.now();
+  if(l.until>now){lkMsg('Espera '+Math.ceil((l.until-now)/1000)+' s para volver a intentar',true);return}
+  if(k==='⌫')lockBuf=lockBuf.slice(0,-1);else if(lockBuf.length<l.len)lockBuf+=k;
+  lockDots();if(lockBuf.length<l.len)return;
+  var pin=lockBuf;lockBuf='';
+  checkPin(pin).then(function(ok){
+    if(ok){l.fails=0;l.until=0;save();lockEl.hidden=true;setInert(false);awayAt=0;return}
+    l.fails=(l.fails||0)+1;if(l.fails>=10){l.until=Date.now()+300000}else if(l.fails>=5){l.until=Date.now()+30000}save();lockDots();
+    lkMsg(l.until>Date.now()?'Demasiados intentos. Espera '+Math.ceil((l.until-Date.now())/1000)+' s':'PIN incorrecto',true);
+    try{if(navigator.vibrate)navigator.vibrate(120)}catch(e){}})}
+var AFTER=[['Siempre que salga de la app',3],['Tras 1 minuto fuera',60],['Tras 5 minutos fuera',300],['Tras 15 minutos fuera',900]];
+function renderSecCard(){
+  var host=$('#secCard');if(!host)return;var l=LK(),bk=S.backup&&S.backup.last;
+  host.innerHTML='<h2>Privacidad y respaldo</h2>';
+  /* PIN */
+  var pin=el('','stack');pin.innerHTML='<h3>PIN de la app</h3><p class="muted small">Pide un PIN al abrir Luar Mind. Evita que otras personas lean tu diario. Los datos siguen guardados sin cifrar en este dispositivo, así que no protege contra alguien con acceso técnico al teléfono.</p>';
+  function pinForm(mode){
+    var f=el('','stack');
+    f.innerHTML=(mode!=='new'?'<div class="field"><label for="pnCur">PIN actual</label><input type="password" id="pnCur" inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]*"></div>':'')+(mode!=='remove'?'<div class="field"><label for="pnNew">'+(mode==='new'?'Nuevo PIN':'PIN nuevo')+' (4 a 6 números)</label><input type="password" id="pnNew" inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]*"></div><div class="field"><label for="pnNew2">Repite el PIN</label><input type="password" id="pnNew2" inputmode="numeric" autocomplete="off" maxlength="6" pattern="[0-9]*"></div>':'')+'<div class="row"><button class="btn" id="pnOk" type="button">'+(mode==='remove'?'Quitar PIN':'Guardar PIN')+'</button><button class="btn ghost" id="pnNo" type="button">Cancelar</button></div><p class="muted small" id="pnErr" role="alert"></p>';
+    f.querySelector('#pnNo').onclick=renderSecCard;
+    f.querySelector('#pnOk').onclick=function(){var err=f.querySelector('#pnErr'),v=function(i){var x=f.querySelector('#'+i);return x?x.value:''};
+      var go=function(){if(mode==='remove'){l.on=false;l.hash='';l.salt='';save();toast('PIN quitado');renderSecCard();return}
+        var a=v('pnNew'),b=v('pnNew2');if(!/^\d{4,6}$/.test(a)){err.textContent='Usa de 4 a 6 números.';return}if(a!==b){err.textContent='Los PIN no coinciden.';return}
+        if(/^(\d)\1+$/.test(a)||a==='1234'||a==='123456'||a==='0000'){err.textContent='Elige un PIN menos obvio.';return}
+        setPin(a).then(function(){toast('PIN guardado');renderSecCard()})};
+      if(mode==='new')go();else checkPin(v('pnCur')).then(function(ok){if(!ok){err.textContent='El PIN actual no es correcto.';return}go()})};
+    return f}
+  var area=el('','stack');
+  if(!l.on){pin.appendChild(mkBtn('Crear PIN','',function(){area.innerHTML='';area.appendChild(pinForm('new'))}))}
+  else{var r=el('<span class="muted small">PIN activo.</span>','row');r.appendChild(mkBtn('Cambiar','ghost',function(){area.innerHTML='';area.appendChild(pinForm('change'))}));r.appendChild(mkBtn('Quitar','ghost',function(){area.innerHTML='';area.appendChild(pinForm('remove'))}));r.appendChild(mkBtn('Bloquear ahora','ghost',function(){showLock()}));pin.appendChild(r);
+    var sel=el('<div class="field"><label for="pnAfter">Volver a pedir el PIN</label><select id="pnAfter">'+AFTER.map(function(a){return '<option value="'+a[1]+'"'+(l.after===a[1]?' selected':'')+'>'+a[0]+'</option>'}).join('')+'</select></div>');sel.querySelector('select').onchange=function(e){l.after=+e.target.value;save()};pin.appendChild(sel);
+    pin.appendChild(el('<p class="muted small">Los recordatorios con tu PIN activo no muestran el texto de tus tareas en la pantalla del teléfono.</p>'))}
+  pin.appendChild(area);host.appendChild(pin);
+  /* respaldo */
+  var bu=el('','stack');bu.innerHTML='<h3>Respaldo de tus datos</h3><p class="muted small">Todo se guarda solo en este dispositivo. Si borras los datos del navegador o cambias de teléfono, se pierde. Guarda un respaldo de vez en cuando.</p><p class="small">'+(bk?'Último respaldo: <strong>'+new Date(bk).toLocaleDateString('es-PE',{day:'numeric',month:'long',year:'numeric'})+'</strong>':'<strong>Aún no hiciste ningún respaldo.</strong>')+'</p><div class="field"><label for="bkPw">Contraseña del archivo (opcional, protege tu respaldo)</label><input type="password" id="bkPw" autocomplete="new-password" maxlength="60"></div><p class="muted small">Si pones contraseña, la necesitarás para restaurar. No se puede recuperar.</p>';
+  var br=el('','row');br.appendChild(mkBtn('Descargar respaldo','',function(){doBackup(bu.querySelector('#bkPw').value,bu)}));
+  var fi=document.createElement('input');fi.type='file';fi.accept='.json,application/json';fi.hidden=true;fi.id='bkFile';
+  br.appendChild(mkBtn('Restaurar respaldo','ghost',function(){fi.click()}));br.appendChild(fi);bu.appendChild(br);
+  var msg=el('','stack');msg.id='bkMsg';bu.appendChild(msg);fi.onchange=function(){if(fi.files&&fi.files[0])doRestore(fi.files[0],msg);fi.value=''};
+  host.appendChild(bu)}
+function backupObj(){var d=JSON.parse(JSON.stringify(S));delete d.lock;if(d.notif){d.notif.on=false;d.notif.sent={}}return {luar:1,app:'luar-mind',exported:new Date().toISOString(),data:d}}
+function dl(name,text){var b=new Blob([text],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500)}
+function doBackup(pw,host){
+  S.backup={last:Date.now()};save();var o=backupObj(),name='luar-mind-respaldo-'+today()+'.json',msg=host.querySelector('#bkMsg')||host;
+  function out(text){dl(name,text);toast('Respaldo descargado');setTimeout(renderSecCard,200)}
+  if(!pw){out(JSON.stringify(o));return}
+  if(!cryptoOK()){toast('Tu navegador no permite cifrar. Descarga sin contraseña.');return}
+  var salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+  kdf(pw,salt,150000,['encrypt']).then(function(k){return crypto.subtle.encrypt({name:'AES-GCM',iv:iv},k,new TextEncoder().encode(JSON.stringify(o)))}).then(function(ct){out(JSON.stringify({luar:1,app:'luar-mind',enc:true,exported:o.exported,salt:b64e(salt),iv:b64e(iv),data:b64e(ct)}))}).catch(function(){toast('No se pudo cifrar el respaldo')})}
+function cleanDeep(x,d){if(d>9)return null;if(typeof x==='string')return x.replace(/[<>]/g,'').slice(0,5000);if(typeof x==='number')return isFinite(x)?x:0;if(typeof x==='boolean'||x===null)return x;
+  if(Array.isArray(x))return x.slice(0,3000).map(function(v){return cleanDeep(v,d+1)});
+  if(typeof x==='object'){var o={};Object.keys(x).slice(0,3000).forEach(function(k){if(k==='__proto__'||k==='constructor'||k==='prototype')return;o[k.slice(0,80)]=cleanDeep(x[k],d+1)});return o}return null}
+function doRestore(file,host){
+  host.innerHTML='';if(file.size>6e6){host.textContent='El archivo es demasiado grande para ser un respaldo de Luar.';return}
+  file.text().then(function(txt){var j;try{j=JSON.parse(txt)}catch(e){host.textContent='Ese archivo no es un respaldo válido.';return}
+    if(!j||j.luar!==1){host.textContent='Ese archivo no parece un respaldo de Luar Mind.';return}
+    if(j.enc){host.appendChild(el('<div class="field"><label for="rsPw">Contraseña del respaldo</label><input type="password" id="rsPw" autocomplete="off"></div>'));host.appendChild(mkBtn('Abrir respaldo','',function(){var pw=host.querySelector('#rsPw').value;if(!cryptoOK()){host.textContent='Tu navegador no puede descifrar este archivo.';return}
+      kdf(pw,b64d(j.salt),150000,['decrypt']).then(function(k){return crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(j.iv)},k,b64d(j.data))}).then(function(pt){var o=JSON.parse(new TextDecoder().decode(pt));confirmRestore(o.data,o.exported,host)}).catch(function(){host.appendChild(el('<p role="alert" style="color:var(--danger)">Contraseña incorrecta o archivo dañado.</p>'))})}));return}
+    confirmRestore(j.data,j.exported,host)}).catch(function(){host.textContent='No se pudo leer el archivo.'})}
+function confirmRestore(data,when,host){
+  host.innerHTML='';if(!data||typeof data!=='object'||!(Array.isArray(data.entries)||data.wb||data.profile)){host.textContent='El respaldo no contiene datos válidos.';return}
+  var c=cleanDeep(data,0),ne=Array.isArray(c.entries)?c.entries.length:0,nt=c.wb&&Array.isArray(c.wb.trs)?c.wb.trs.length:0;
+  host.appendChild(el('<div class="card" style="background:var(--surface2)"><strong>Respaldo encontrado</strong><p class="muted small">Del '+(when?new Date(when).toLocaleDateString('es-PE',{day:'numeric',month:'long',year:'numeric'}):'(fecha desconocida)')+' · '+ne+' registros de ánimo · '+nt+' registros de pensamientos.</p><p class="small"><strong>Restaurar reemplaza todo lo que tienes ahora en este dispositivo.</strong></p></div>'));
+  var b=mkBtn('Reemplazar mis datos con este respaldo','warn',function(){if(!b._a){b._a=true;b.textContent='Confirmar: reemplazar todo';setTimeout(function(){b._a=false;b.textContent='Reemplazar mis datos con este respaldo'},5000);return}
+    var ns=Object.assign(def(),c);ns.accepted=S.accepted;ns.lock=S.lock;if(ns.notif)ns.notif.on=false;ns.backup={last:Date.now()};S=ns;save();toast('Datos restaurados');setTimeout(function(){location.reload()},700)});host.appendChild(b)}
+
+/* ----- plan de seguridad personal ----- */
+function SAF(){var s=S.safety;if(!s||typeof s!=='object')s=S.safety={};['signs','cope','places','reasons'].forEach(function(k){if(!Array.isArray(s[k]))s[k]=[]});['people','helpers','pros'].forEach(function(k){if(!Array.isArray(s[k]))s[k]=[]});if(typeof s.safe!=='string')s.safe='';return s}
+function parseContacts(t){return String(t||'').split('\n').map(function(l){return l.trim()}).filter(Boolean).slice(0,6).map(function(l){var m=l.match(/(\+?[\d][\d\s\-]{5,})\s*$/);if(m)return {n:l.slice(0,m.index).replace(/[\s,:\-–—]+$/,'').trim()||'Contacto',p:m[1].replace(/[^\d+]/g,'')};return {n:l,p:''}})}
+function parseLines(t){return String(t||'').split('\n').map(function(l){return l.trim().slice(0,160)}).filter(Boolean).slice(0,8)}
+function contactsTxt(a){return a.map(function(c){return c.n+(c.p?' '+c.p:'')}).join('\n')}
+function safetyEmpty(){var s=SAF();return !(s.signs.length||s.cope.length||s.people.length||s.places.length||s.helpers.length||s.pros.length||s.safe||s.reasons.length)}
+function renderSafety(editing){
+  var host=$('#safetyCard');if(!host)return;var s=SAF();host.innerHTML='';
+  var top=el('<div class="row" style="justify-content:space-between"><h2>Mi plan de seguridad</h2></div>');host.appendChild(top);
+  var call=el('<div class="row"><a class="call" href="tel:113">Llamar al 113</a><a class="call" href="tel:106">Llamar al 106 (SAMU)</a></div><p class="muted small">Si estás en peligro ahora o piensas en hacerte daño, no esperes a completar el plan: llama o ve a emergencias.</p>');host.appendChild(call);
+  if(editing){editSafety(host,s);return}
+  if(safetyEmpty()){host.appendChild(el('<p>Un plan de seguridad es una hoja corta que haces <strong>cuando estás relativamente bien</strong>, para saber qué hacer y a quién acudir si algún día te sientes muy mal. Toma unos 5 minutos.</p>'));host.appendChild(mkBtn('Crear mi plan','',function(){renderSafety(true)}));return}
+  function sec(t,items,contacts){if(!items.length)return;var d=el('<strong>'+t+'</strong>');host.appendChild(d);var ul=document.createElement('ul');items.forEach(function(x){var li=document.createElement('li');if(contacts){li.innerHTML=esc2(x.n)+(x.p?' · <a class="call" href="tel:'+esc2(x.p)+'">Llamar '+esc2(x.p)+'</a>':'')}else li.textContent=x;ul.appendChild(li)});host.appendChild(ul)}
+  sec('1. Mis señales de alerta',s.signs);sec('2. Cosas que puedo hacer yo solo/a',s.cope);sec('3. Personas y lugares que me distraen o acompañan',s.places.concat(s.people.map(function(p){return p.n})));
+  sec('4. Personas a las que puedo pedir ayuda',s.helpers,true);sec('5. Profesionales y servicios',s.pros,true);
+  if(s.safe)host.appendChild(el('<strong>6. Hacer mi entorno más seguro</strong><p>'+esc2(s.safe)+'</p>'));sec('7. Lo que me importa y me da razones para seguir',s.reasons);
+  var r=el('','row');r.appendChild(mkBtn('Editar','ghost',function(){renderSafety(true)}));host.appendChild(r);
+  if(s.cope.length)actButtons(['belly','ground','stop'],host)}
+function editSafety(host,s){
+  host.insertAdjacentHTML('beforeend','<p class="muted">Escribe con calma, una cosa por línea. Todo se guarda solo en tu dispositivo.</p>'+
+   '<div class="field"><label for="sf1">1. Mis señales de alerta (pensamientos, emociones o situaciones que me avisan que estoy peor)</label><textarea id="sf1" rows="3"></textarea></div>'+
+   '<div class="field"><label for="sf2">2. Cosas que puedo hacer yo solo/a para calmarme (respirar, caminar, música…)</label><textarea id="sf2" rows="3"></textarea></div>'+
+   '<div class="field"><label for="sf3">3. Personas o lugares que me distraen o me hacen bien</label><textarea id="sf3" rows="2" placeholder="Ej.: Parque de mi barrio&#10;Casa de mi prima"></textarea></div>'+
+   '<div class="field"><label for="sf4">4. Personas a las que puedo pedir ayuda (nombre y teléfono, una por línea)</label><textarea id="sf4" rows="3" placeholder="Ej.: Mamá 987654321&#10;Mi amigo Luis 912345678"></textarea></div>'+
+   '<div class="field"><label for="sf5">5. Profesionales o servicios de ayuda (nombre y teléfono)</label><textarea id="sf5" rows="3"></textarea></div>'+
+   '<div class="field"><label for="sf6">6. Cómo hacer mi entorno más seguro (por ejemplo, pedirle a alguien que guarde objetos con los que podría hacerme daño)</label><textarea id="sf6" rows="2"></textarea></div>'+
+   '<div class="field"><label for="sf7">7. Lo que me importa y me da razones para seguir</label><textarea id="sf7" rows="2"></textarea></div>'+
+   '<div class="row"><button class="btn" id="sfSave" type="button">Guardar plan</button><button class="btn ghost" id="sfCancel" type="button">Cancelar</button></div>');
+  var q=function(i){return host.querySelector('#'+i)};
+  q('sf1').value=s.signs.join('\n');q('sf2').value=s.cope.join('\n');q('sf3').value=s.places.join('\n');q('sf4').value=contactsTxt(s.helpers);q('sf5').value=contactsTxt(s.pros);q('sf6').value=s.safe;q('sf7').value=s.reasons.join('\n');
+  q('sfCancel').onclick=function(){renderSafety(false)};
+  q('sfSave').onclick=function(){s.signs=parseLines(q('sf1').value);s.cope=parseLines(q('sf2').value);s.places=parseLines(q('sf3').value);s.helpers=parseContacts(q('sf4').value);s.pros=parseContacts(q('sf5').value);s.safe=q('sf6').value.trim().slice(0,300);s.reasons=parseLines(q('sf7').value);s.people=[];save();toast('Plan guardado');wbStatOnce('plan');renderSafety(false)}}
+function wbInit3(){
+  LK();SAF();ACTLABEL.plan='plan de seguridad';
+  var cr=$('#tab-help .card.crisis');if(cr&&!$('#safetyCard')){var c=el('','card stack');c.id='safetyCard';cr.parentNode.insertBefore(c,cr.nextSibling)}
+  renderSafety(false);
+  ACT.plan={tab:'help',open:function(){renderSafety(true);var h=$('#safetyCard');h&&h.scrollIntoView({block:'start'})}};
+  try{TIP_MOOD[1][2].act=['plan','help'];TIP_MOOD[1][2].b=TIP_MOOD[1][2].b+' Tener a mano tu plan de seguridad ayuda.'}catch(e){}
+  var nc=$('#notifCard');if(nc&&!$('#secCard')){var s2=el('','card stack');s2.id='secCard';nc.parentNode.insertBefore(s2,nc.nextSibling)}
+  renderSecCard();
+  if(LK().on){buildLock();showLock()}
+  document.addEventListener('visibilitychange',function(){var l=LK();if(!l.on)return;if(document.visibilityState==='hidden')awayAt=Date.now();else if(awayAt&&Date.now()-awayAt>=l.after*1000)showLock()});
+}
+
+/* ========== fin wb ========== */
+
 /* ---------- navegación y arranque ---------- */
-var TABS=[['home','Inicio'],['chat','Chat'],['agenda','Agenda'],['log','Registro'],['tips','Tips'],['help','Ayuda']];
+var TABS=[['home','Inicio'],['chat','Chat'],['calm','Calma'],['practice','Practicar'],['log','Diario'],['agenda','Agenda'],['tips','Tips'],['help','Ayuda']];
 function show(id){
+  try{stopGuide()}catch(e){}
+  if(id==='agenda'){try{ensurePlan();renderAgenda();renderCare()}catch(e){}}
+  if(id==='home'){try{renderForYou();renderEvo()}catch(e){}}
   TABS.forEach(function(t){var s=$('#tab-'+t[0]);s.hidden=t[0]!==id});
   Array.prototype.forEach.call($('#tabs').children,function(b){b.setAttribute('aria-current',String(b.dataset.id===id))});
   if(id!=='home'){stopBreath();stopGame()}
@@ -3495,7 +4493,7 @@ $('#sosBtn').onclick=function(){show('help')};
 var LOGO='data:image/jpeg;base64,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';$('#brand').innerHTML='<img src="'+LOGO+'" alt="" width="40" height="40"><span>Luar Mind</span>';$('#gateLogo').src=LOGO;
 
 try{fillProfile()}catch(e){}
-renderMoods();refreshPet();renderAgenda();renderLog();renderTips();renderNumbers();buildCare();tickPet();setInterval(tickPet,5000);(function(){var t=getTheme();if(t==='dark'||t==='light')applyTheme(t);else renderTheme()})();
+wbInit();wbInit2();wbInit3();renderMoods();refreshPet();renderAgenda();renderLog();renderTips();renderNumbers();buildCare();tickPet();setInterval(tickPet,5000);(function(){var t=getTheme();if(t==='dark'||t==='light')applyTheme(t);else renderTheme()})();
 var h=(location.hash||'').replace('#','');
 show(TABS.some(function(t){return t[0]===h})?h:'home');
 if(!S.accepted){var g=$('#gate');g.hidden=false;$('#gateOk').focus();$('#gateOk').onclick=function(){S.accepted=true;save();g.hidden=true}}

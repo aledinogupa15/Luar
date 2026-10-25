@@ -1,6 +1,6 @@
 {
-  "name": "Luar Mind",
-  "short_name": "Luar Mind",
+  "name": "Luar",
+  "short_name": "Luar",
   "description": "Espacio de apoyo emocional con tu mascota Luar, agenda, registro de ánimo, juegos y chat.",
   "lang": "es",
   "start_url": "./index.html",

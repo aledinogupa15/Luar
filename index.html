@@ -6392,6 +6392,7 @@ function wbInit10(){
     sync();if(window.MutationObserver)new MutationObserver(sync).observe(lg,{childList:true})}}
 
 /* ===== v28: sugerencias (se guardan en Supabase) ===== */
+MENU_ICONS.sug='<path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/>';
 var SUG_CATS=[['idea','Idea'],['problema','Problema'],['contenido','Contenido'],['otro','Otro']];
 var SUG={cat:'idea',sending:false};
 function sugQueue(){if(!Array.isArray(S.sugQ))S.sugQ=[];return S.sugQ}
